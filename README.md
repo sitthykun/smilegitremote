@@ -1,5 +1,5 @@
 # Smile Git Remote
-Use a web service(microservice) to use git's command
+Use a web service(microservice) to remote git's command
 ## Version 0.1.0
 - This project lets us pull a repo via website that installed and 
 set configure
