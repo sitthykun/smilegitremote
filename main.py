@@ -6,7 +6,6 @@ Note:
 Version: 0.1.0
 """
 # built-in
-import json
 from typing import Any
 # external
 from flask import Flask
