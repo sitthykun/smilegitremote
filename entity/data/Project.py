@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.0
+Version: 1.0.1
 """
 # external
 from smileerror.ErrorBase import ErrorBase
@@ -19,7 +19,6 @@ class Project:
 	"""
 	class Constant:
 		AUTH            = 'auth'
-		DATE_TIME       = 'datetime_format'
 		ENV             = 'env'
 		FORCE_CLONE     = 'force_clone'
 		FORCE_PULL      = 'force_pull'
@@ -76,7 +75,6 @@ class Project:
 
 		# public
 		self.auth           = self.__getAuth(self.__data.get(Project.Constant.AUTH))
-		self.dateTime       = self.__data.get(Project.Constant.DATE_TIME)
 		self.env            = self.__data.get(Project.Constant.ENV)
 		self.forceClone     = self.__data.get(Project.Constant.FORCE_CLONE)         or  'false'
 		self.forcePull      = self.__data.get(Project.Constant.FORCE_PULL)          or  'false'
@@ -116,7 +114,6 @@ class Project:
 		"""
 		return {
 			Project.Constant.AUTH           : self.auth
-			, Project.Constant.DATE_TIME    : self.dateTime
 			, Project.Constant.ENV          : self.env
 			, Project.Constant.FORCE_CLONE  : self.forceClone
 			, Project.Constant.FORCE_PULL   : self.forcePull

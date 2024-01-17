@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.0
+Version: 1.0.1
 """
 import datetime
 # built-in
@@ -29,6 +29,7 @@ class Action:
 		:param log:
 		"""
 		# private
+		self.__dateTimeFormat   = '%Y-%m-%d %H:%M:%S'
 		self.__git          = Git(log)
 		self.__isHeaderJson = False
 		self.__param        = {}
@@ -96,6 +97,7 @@ class Action:
 		:param projectId:
 		:param username:
 		:param password:
+		:param isJson:
 		:return:
 		"""
 		# init
@@ -164,7 +166,7 @@ class Action:
 				, 'project_name': project.name
 				, 'branch_name' : project.gitBranch
 				, 'commit'      : commitId
-				, 'datetime'    : (datetime.datetime.utcnow().strftime(project.dateTime))
+				, 'datetime'    : datetime.datetime.utcnow().strftime(self.__dateTimeFormat)
 			})
 
 		return self.__respond({'status': 'fail'})
