@@ -10,7 +10,7 @@ import os
 import shutil
 import subprocess
 # external
-import git
+# import git
 from git import Repo, Remote
 from git.exc import GitError, GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from smileerror.ErrorBase import ErrorBase
@@ -32,7 +32,7 @@ class Git:
 		# private
 		self.__dir      = ''
 		self.__remoteUrl= ''
-		self.__repo     = git.Repo()
+		self.__repo     = Repo()
 		# instance
 		# public
 		self.error      = ErrorBase()
@@ -89,7 +89,7 @@ class Git:
 		try:
 			self.error.setFalse()
 			#
-			return git.Repo(dir)
+			return Repo(dir)
 
 		except Exception as e:
 			self.error.setTrue(code= 206, message= str(e))
@@ -141,7 +141,7 @@ class Git:
 		"""
 		# get date by condition
 		temp    = dir if dir else self.__dir
-		self.log.info(title='core.Git.cloneFrom 2', content=f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
+		self.log.info(title= 'core.Git.cloneFrom 2', content= f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
 		#
 		try:
 			self.error.setFalse()
@@ -217,7 +217,7 @@ class Git:
 
 			#
 			if dir and len(dir) > minPathChars:
-				g   = git.Repo(dir, search_parent_directories= True)
+				g   = Repo(dir, search_parent_directories= True)
 				self.log.info(title= 'core.Git.exist 2', content= f'{dir=}, {g.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
 				# check length of path
 				return len(g.remote(remoteOrigin).url) > minPathChars
