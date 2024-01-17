@@ -16,7 +16,7 @@ from git.exc import GitError, GitCommandError, InvalidGitRepositoryError, NoSuch
 from smileerror.ErrorBase import ErrorBase
 from smilelog.Logger import Logger
 # internal
-from core.ReqValidate import ReqValidation
+from core.ReqValidity import ReqValidity
 # from entity.data.Project import Project
 
 
