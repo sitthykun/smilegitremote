@@ -1,0 +1,5 @@
+[
+  {"role": "admin", "enable": "true"}
+  , {"role": "user", "enable": "true"}
+  , {"role": "supervisor", "enable": "true"}
+]

@@ -1,0 +1,32 @@
+# editor
+.vscode
+.vscode/
+.vscode/*
+
+.idea
+.idea/
+.idea/*
+
+# vendor
+.venv
+.venv/
+.venv/*
+
+# os
+.DS_Store
+.DS_Store/
+.DS_Store/*
+
+# python
+__pycache__
+
+# node
+package-lock.json
+node_modules
+node_modules/
+node_modules/*
+
+# smilelogger
+log
+log/
+log/*
