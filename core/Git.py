@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 # built-in
 import os
@@ -180,7 +180,9 @@ class Git:
 					self.log.fail(title= 'core.Git.cloneFrom 4', content= f'{self.error.getMessage()}')
 
 				else:
+					# update object
 					self.__repo = r
+					self.__dir  = dir
 					self.log.success(title= 'core.Git.cloneFrom 5', content= f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}')
 
 			# no error
@@ -296,6 +298,7 @@ class Git:
 			return shaShort if short else shaFull
 
 		except Exception as e:
+			self.log.error(title= 'core.Git.getCommitHash Exception', content= f'{str(e)}')
 			return ''
 
 	def pull(self, remoteOrigin: str= None) -> None:
