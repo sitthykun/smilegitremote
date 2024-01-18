@@ -27,6 +27,4 @@ node_modules/
 node_modules/*
 
 # smilelogger
-log
-log/
-log/*
+log/*.log

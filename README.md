@@ -102,6 +102,13 @@ Start a terminal with CURL command
 $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
 ```
 
-Hopely, you will enjoy it
+## GUnicorn
+If you need to configure with Linux server, I recommend to run wsgi instead.
+Example:
+```
+$ gunicorn --bind 127.0.0.1:5000 wsgi:app
+```
+
+Hopefully, you will enjoy it
 
 To Support my work, please donate me via <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/sitthykun"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a Pizza"><span style="margin-left:5px;font-size:28px !important;">Buy me a Coffee</span></a>
