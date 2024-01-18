@@ -142,8 +142,8 @@ class Git:
 		:return:
 		"""
 		# get date by condition
-		temp    = dir if dir else self.__dir
-		self.log.info(title= 'core.Git.cloneFrom 2', content= f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
+		tempDir = dir if dir else self.__dir
+		self.log.info(title= 'core.Git.cloneFrom 2', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
 		#
 		try:
 			self.error.setFalse()
@@ -152,7 +152,7 @@ class Git:
 			# repo_url = 'https://sitthykun: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@github.com/sitthykun/test-repo-private.git'
 			r   = self.__cloneFrom(
 				url     = repoURL
-				, dir   = temp
+				, dir   = tempDir
 			)
 
 			# error
@@ -161,18 +161,18 @@ class Git:
 				# must remove and create
 				if force:
 					# no repo, but has files (dirty)
-					if self.__removeFolder(theFolder= temp) and self.__createFolder(theFolder= temp):
-						self.log.info(title= 'core.Git.cloneFrom 4', content= f'removed dir:{temp}, created dir: {temp}')
+					if self.__removeFolder(theFolder= tempDir) and self.__createFolder(theFolder= tempDir):
+						self.log.info(title= 'core.Git.cloneFrom 4', content= f'removed dir:{tempDir}, created dir: {tempDir}')
 
 				else:
 					# create only
-					if self.__createFolder(theFolder= temp):
-						self.log.info(title= 'core.Git.cloneFrom 3', content= f'created dir: {temp}')
+					if self.__createFolder(theFolder= tempDir):
+						self.log.info(title= 'core.Git.cloneFrom 3', content= f'created dir: {tempDir}')
 
 				# start cloning again
 				r = self.__cloneFrom(
 					url     = repoURL
-					, dir   = temp
+					, dir   = tempDir
 				)
 
 				# check result again
@@ -183,12 +183,13 @@ class Git:
 					# update object
 					self.__repo = r
 					self.__dir  = dir
-					self.log.success(title= 'core.Git.cloneFrom 5', content= f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}')
+					self.log.success(title= 'core.Git.cloneFrom 5', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
 
 			# no error
 			else:
 				self.__repo = r
-				self.log.info(title= 'core.Git.cloneFrom 1', content= f'dir: {temp}, {dir=}, {self.__dir=}, {repoURL=}')
+				self.__dir  = tempDir
+				self.log.info(title= 'core.Git.cloneFrom 1', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
 
 		except GitError as e:
 			self.error.setTrue(code= 213, message= str(e))
