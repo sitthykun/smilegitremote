@@ -336,7 +336,7 @@ class Git:
 			#
 			self.__dir      = dir
 			self.__remoteUrl= url
-			self.__repo     = git.Repo(self.__dir, search_parent_directories= True)
+			self.__repo     = Repo(self.__dir, search_parent_directories= True)
 			self.log.info(title= 'core.Git.setRepo 1', content= f'{self.__dir=}, {self.__remoteUrl=}')
 
 		except Exception as e:
