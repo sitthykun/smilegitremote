@@ -102,11 +102,26 @@ Start a terminal with CURL command
 $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
 ```
 
-## GUnicorn
+## Server Deployment
+### GUnicorn
 If you need to configure with Linux server, I recommend to run wsgi instead.
 Example:
 ```
 $ gunicorn --bind 127.0.0.1:5000 wsgi:app
+```
+
+### Bash profile
+If it raised this error message or any kind of unrecognised git command
+```
+Cmd('git') not found due to: FileNotFoundError('[Errno 2] No such file or directory: 'git'')
+```
+
+Please try adding these below lines to your current theme profile such as .bashrc
+```
+# gitpython
+export PATH=$PATH:/usr/bin/git
+export GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+export GIT_SSH_COMMAND="/usr/bin/ssh -i ~/.ssh/id_rsa"
 ```
 
 Hopefully, you will enjoy it
