@@ -3,12 +3,11 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.2
+Version: 1.0.3
 """
 # built-in
 import os
 import shutil
-import subprocess
 # external
 # https://stackoverflow.com/questions/48399498/git-executable-not-found-in-python
 os.environ['GIT_PYTHON_REFRESH'] = 'quiet'
@@ -22,7 +21,7 @@ from core.ReqValidity import ReqValidity
 # from entity.data.Project import Project
 
 
-class Git:
+class GitPyLib:
 	"""
 
 	"""
@@ -49,11 +48,11 @@ class Git:
 		try:
 			if not os.path.exists(theFolder):
 				os.mkdir(theFolder)
-				self.log.info(title= 'core.Git.__createFolder create the folder', content=f' {theFolder}')
+				self.log.info(title= 'core.GitPyLib.__createFolder create the folder', content=f' {theFolder}')
 				return True
 
 		except Exception as e:
-			self.log.error(title= 'core.Git.__createFolder Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.__createFolder Exception', content= f'{str(e)}')
 		#
 		return False
 
@@ -68,7 +67,7 @@ class Git:
 			#
 			self.error.setFalse()
 
-			self.log.info(title='core.Git.__cloneFrom 1', content= f'{url=}, {dir=}')
+			self.log.info(title='core.GitPyLib.__cloneFrom 1', content= f'{url=}, {dir=}')
 			return Repo.clone_from(
 				url         = url
 				, to_path   = dir
@@ -76,10 +75,10 @@ class Git:
 
 		except GitCommandError as e:
 			self.error.setTrue(code= 212, message= str(e))
-			self.log.error(title= 'core.Git.__cloneFrom GitCommandError', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.__cloneFrom GitCommandError', content= f'{str(e)}')
 
 		except Exception as e:
-			self.log.error(title= 'core.Git.__cloneFrom Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.__cloneFrom Exception', content= f'{str(e)}')
 			return None
 
 	def __getRepo(self, dir: str= None) -> Repo | None:
@@ -95,7 +94,7 @@ class Git:
 
 		except Exception as e:
 			self.error.setTrue(code= 206, message= str(e))
-			self.log.error(title= 'core.Git.__getRepo Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.__getRepo Exception', content= f'{str(e)}')
 			return None
 
 	def __removeFolder(self, theFolder: str, force: bool= True) -> bool:
@@ -108,12 +107,12 @@ class Git:
 		try:
 			if os.path.exists(theFolder):
 				shutil.rmtree(theFolder)
-				self.log.info(title= 'core.Git.__removeFolder remove the folder tree', content= f' {theFolder}')
+				self.log.info(title= 'core.GitPyLib.__removeFolder remove the folder tree', content= f' {theFolder}')
 				#
 				return True
 
 		except Exception as e:
-			self.log.error(title='core.Git.__removeFolder Exception', content= f'{str(e)}')
+			self.log.error(title='core.GitPyLib.__removeFolder Exception', content= f'{str(e)}')
 		#
 		return False
 
@@ -131,7 +130,7 @@ class Git:
 
 		except Exception as e:
 			self.error.setTrue(code= 205, message= str(e))
-			self.log.error(title= 'core.Git.checkout Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.checkout Exception', content= f'{str(e)}')
 
 	def cloneFrom(self, repoURL: str, dir: str= None, force: bool= False) -> None:
 		"""
@@ -143,7 +142,7 @@ class Git:
 		"""
 		# get date by condition
 		tempDir = dir if dir else self.__dir
-		self.log.info(title= 'core.Git.cloneFrom 2', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
+		self.log.info(title= 'core.GitPyLib.cloneFrom 2', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}, {force=}')
 		#
 		try:
 			self.error.setFalse()
@@ -162,12 +161,12 @@ class Git:
 				if force:
 					# no repo, but has files (dirty)
 					if self.__removeFolder(theFolder= tempDir) and self.__createFolder(theFolder= tempDir):
-						self.log.info(title= 'core.Git.cloneFrom 4', content= f'removed dir:{tempDir}, created dir: {tempDir}')
+						self.log.info(title= 'core.GitPyLib.cloneFrom 4', content= f'removed dir:{tempDir}, created dir: {tempDir}')
 
 				else:
 					# create only
 					if self.__createFolder(theFolder= tempDir):
-						self.log.info(title= 'core.Git.cloneFrom 3', content= f'created dir: {tempDir}')
+						self.log.info(title= 'core.GitPyLib.cloneFrom 3', content= f'created dir: {tempDir}')
 
 				# start cloning again
 				r = self.__cloneFrom(
@@ -177,27 +176,27 @@ class Git:
 
 				# check result again
 				if self.error.isTrue():
-					self.log.fail(title= 'core.Git.cloneFrom 4', content= f'{self.error.getMessage()}')
+					self.log.fail(title= 'core.GitPyLib.cloneFrom 4', content= f'{self.error.getMessage()}')
 
 				else:
 					# update object
 					self.__repo = r
 					self.__dir  = dir
-					self.log.success(title= 'core.Git.cloneFrom 5', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
+					self.log.success(title= 'core.GitPyLib.cloneFrom 5', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
 
 			# no error
 			else:
 				self.__repo = r
 				self.__dir  = tempDir
-				self.log.info(title= 'core.Git.cloneFrom 1', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
+				self.log.info(title= 'core.GitPyLib.cloneFrom 1', content= f'dir: {tempDir}, {dir=}, {self.__dir=}, {repoURL=}')
 
 		except GitError as e:
 			self.error.setTrue(code= 213, message= str(e))
-			self.log.error(title= 'core.Git.GitError GitError', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.GitError GitError', content= f'{str(e)}')
 
 		except Exception as e:
 			self.error.setTrue(code= 204, message= str(e))
-			self.log.error(title= 'core.Git.cloneFrom Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.cloneFrom Exception', content= f'{str(e)}')
 
 	def exist(self, dir: str= None, remoteOrigin: str= None) -> bool:
 		"""
@@ -209,7 +208,7 @@ class Git:
 		#
 		found       = False
 		minPathChars= 3
-		self.log.info(title= 'core.Git.exist 1', content= f'{dir=}')
+		self.log.info(title= 'core.GitPyLib.exist 1', content= f'{dir=}')
 
 		#
 		try:
@@ -223,22 +222,22 @@ class Git:
 			#
 			if dir and len(dir) > minPathChars:
 				g   = Repo(dir, search_parent_directories= True)
-				self.log.info(title= 'core.Git.exist 2', content= f'{dir=}, {g.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
+				self.log.info(title= 'core.GitPyLib.exist 2', content= f'{dir=}, {g.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
 				# check length of path
 				return len(g.remote(remoteOrigin).url) > minPathChars
 			#
 			elif self.__dir and len(self.__dir) > minPathChars:
-				self.log.info(title= 'core.Git.exist 3', content= f'{self.__dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
+				self.log.info(title= 'core.GitPyLib.exist 3', content= f'{self.__dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
 				# check length of path
 				return len(self.__repo.remote(remoteOrigin).url) > minPathChars
 
 		except InvalidGitRepositoryError as e:
 			self.error.setTrue(code= 223, message= str(e))
-			self.log.error(title= 'core.Git.exist InvalidGitRepositoryError', content= f'{str(e)}, not found the repository')
+			self.log.error(title= 'core.GitPyLib.exist InvalidGitRepositoryError', content= f'{str(e)}, not found the repository')
 
 		except Exception as e:
 			self.error.setTrue(code= 221, message= str(e))
-			self.log.error(title= 'core.Git.exist Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.exist Exception', content= f'{str(e)}')
 		#
 		return found
 
@@ -256,7 +255,7 @@ class Git:
 
 		except Exception as e:
 			self.error.setTrue(code= 201, message= str(e))
-			self.log.error(title= 'core.Git.fetch Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.fetch Exception', content= f'{str(e)}')
 
 	def getBranchName(self) -> str:
 		"""
@@ -268,7 +267,7 @@ class Git:
 			return self.__repo.active_branch.name
 
 		except Exception as e:
-			self.log.error(title= 'core.Git.getBranchName Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.getBranchName Exception', content= f'{str(e)}')
 			return ''
 
 	def getBranchRemoteName(self) -> str:
@@ -280,7 +279,7 @@ class Git:
 			return self.__repo.active_branch.remote_name
 
 		except Exception as e:
-			self.log.error(title= 'core.Git.getBranchRemoteName Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.getBranchRemoteName Exception', content= f'{str(e)}')
 			return ''
 
 	def getCommitHash(self, short: bool= False, length: int= 8) -> str:
@@ -299,7 +298,7 @@ class Git:
 			return shaShort if short else shaFull
 
 		except Exception as e:
-			self.log.error(title= 'core.Git.getCommitHash Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.getCommitHash Exception', content= f'{str(e)}')
 			return ''
 
 	def pull(self, remoteOrigin: str= None) -> None:
@@ -315,11 +314,11 @@ class Git:
 			# git
 			# self.__repo.remotes.origin.pull()
 			self.__repo.remote(remoteOrigin).pull()
-			self.log.info(title= 'core.Git.pull 1', content= f'{remoteOrigin=}, {self.__repo.remote(remoteOrigin).url=}')
+			self.log.info(title= 'core.GitPyLib.pull 1', content= f'{remoteOrigin=}, {self.__repo.remote(remoteOrigin).url=}')
 
 		except Exception as e:
 			self.error.setTrue(code= 202, message= str(e))
-			self.log.error(title= 'core.Git.pull Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.pull Exception', content= f'{str(e)}')
 
 	def remote(self, origin: str= 'origin') -> Remote:
 		"""
@@ -341,8 +340,8 @@ class Git:
 			self.__dir      = dir
 			self.__remoteUrl= url
 			self.__repo     = Repo(self.__dir, search_parent_directories= True)
-			self.log.info(title= 'core.Git.setRepo 1', content= f'{self.__dir=}, {self.__remoteUrl=}')
+			self.log.info(title= 'core.GitPyLib.setRepo 1', content= f'{self.__dir=}, {self.__remoteUrl=}')
 
 		except Exception as e:
 			self.error.setTrue(code= 203, message= str(e))
-			self.log.error(title= 'core.Git.setRepo Exception', content= f'{str(e)}')
+			self.log.error(title= 'core.GitPyLib.setRepo Exception', content= f'{str(e)}')

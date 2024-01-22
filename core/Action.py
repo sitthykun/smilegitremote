@@ -13,7 +13,7 @@ from typing import Any
 from flask import request, jsonify
 from smilelog.Logger import Logger
 # internal
-from core.Git import Git
+from core.GitPyLib import GitPyLib
 from core.Model import Model
 from core.ReqValidity import ReqValidity
 from entity.param.Pull import Pull
@@ -30,13 +30,13 @@ class Action:
 		"""
 		# private
 		self.__dateTimeFormat   = '%Y-%m-%d %H:%M:%S'
-		self.__git          = Git(log)
-		self.__isHeaderJson = False
-		self.__param        = {}
-		self.__model        = Model(filePath= 'data', log= log)
-		self.__reqVal       = ReqValidity(log)
+		self.__git              = GitPyLib(log)
+		self.__isHeaderJson     = False
+		self.__param            = {}
+		self.__model            = Model(filePath= 'data', log= log)
+		self.__reqVal           = ReqValidity(log)
 		# public
-		self.log            = log
+		self.log                = log
 
 	def __help(self, title: str, method: str, url: str, body: dict, code: int= 200) -> Any:
 		"""
@@ -168,7 +168,7 @@ class Action:
 				, 'commit'      : commitId
 				, 'datetime'    : datetime.datetime.utcnow().strftime(self.__dateTimeFormat)
 			})
-
+		#
 		return self.__respond({'status': 'fail'})
 
 	def pullHelp(self) -> Any:

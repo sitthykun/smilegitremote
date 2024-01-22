@@ -124,6 +124,13 @@ export GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
 export GIT_SSH_COMMAND="/usr/bin/ssh -i ~/.ssh/id_rsa"
 ```
 
+### Roadmap
+
+| Version | Description                           |
+|---------|---------------------------------------|
+| 0.1.0   | clone and pull function               |
+
+
 Hopefully, you will enjoy it
 
 To Support my work, please donate me via <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/sitthykun"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a Pizza"><span style="margin-left:5px;font-size:28px !important;">Buy me a Coffee</span></a>
