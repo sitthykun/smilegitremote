@@ -200,8 +200,8 @@ class Action:
 		:param isJson:
 		:return:
 		"""
-		# return self.__pull(projectId, username, password)
-		return self.__pull2(projectId, username, password)
+		return self.__pull(projectId, username, password)
+		# return self.__pull2(projectId, username, password)
 
 	def pullHelp(self) -> Any:
 		"""
