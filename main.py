@@ -6,6 +6,10 @@ Note:
 Version: 0.1.0
 """
 # built-in
+import os
+## set
+os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
+os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 from typing import Any
 # external
 from flask import Flask
