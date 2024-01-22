@@ -132,10 +132,10 @@ os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 
 ### Roadmap
 
-| Version | Description               |
-|---------|---------------------------|
-| 0.1.0   | Clone and pull function   |
-| 0.2.0| Validation implementation |
+| Version | Status  | Description               |
+|---------|--------------------------|---------|
+| 0.1.0   | current | Clone and pull function|   
+| 0.2.0| dev     | Validation implementation |
 
 
 Hopefully, you will enjoy it
