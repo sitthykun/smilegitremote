@@ -7,10 +7,10 @@ Version: 1.0.3
 """
 # built-in
 import os
+# os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
+# os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 import shutil
 # external
-# https://stackoverflow.com/questions/48399498/git-executable-not-found-in-python
-os.environ['GIT_PYTHON_REFRESH'] = 'quiet'
 # import git
 from git import Repo, Remote
 from git.exc import GitError, GitCommandError, InvalidGitRepositoryError, NoSuchPathError

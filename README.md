@@ -1,19 +1,18 @@
 # Smile Git Remote
-Use a web service(microservice) to remote git's command
+Use a web service (microservice) to remote git's command
 ## Version 0.1.0
-- This project lets us pull a repo via website that installed and 
-set configure
+- This project lets us pull a repo via a website that installed and set configuration
 - Using OOP and make a simple structure in Python 3.x
 - Project structure
-  - main.py is a startup and route collection
+  - main.py is a startup and route collecting
   - core directory: where we write code the most, there are Action as Controller class, Model, ReqValidity as Validation class, Git as Git Library
   - data directory: contains git profiles, others json file
   - entity directory: stores the data mapping of the json file and others
 - Framework
   - Flask 3.0.0: To create a service, this project implements Flask 3.0.0 and tried 3.0.1(not yet official)
 - Libraries
-  - Gitpython: In the early idea of my code, I wrote all by integrating git command. This library is still alive until now, that is why, I decide to use and do not want to write my own code. It's the core library which run behind the Git class
-  - SmileError: To catch the error in better way
+  - Gitpython: In the early idea of my code, I wrote all by integrating git command. This library is still alive until now, that is why, I decide to use and do not want to write my own code. It's the core library which runs behind the Git class
+  - SmileError: To catch the error in a better way
   - SmileLogger: For tracking every process
   - SmileValidation: Did not implement yet, but it will use for data validation for the next version
 
@@ -104,7 +103,7 @@ $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\",
 
 ## Server Deployment
 ### GUnicorn
-If you need to configure with Linux server, I recommend to run wsgi instead.
+If you need to configure Linux server, I recommend to run wsgi instead.
 Example:
 ```
 $ gunicorn --bind 127.0.0.1:5000 wsgi:app
@@ -116,19 +115,27 @@ If it raised this error message or any kind of unrecognised git command
 Cmd('git') not found due to: FileNotFoundError('[Errno 2] No such file or directory: 'git'')
 ```
 
-Please try adding these below lines to your current theme profile such as .bashrc
+Please try adding these lines to your current theme profile such as .bashrc
 ```
 # gitpython
 export PATH=$PATH:/usr/bin/git
-export GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
-export GIT_SSH_COMMAND="/usr/bin/ssh -i ~/.ssh/id_rsa"
+export GIT_PYTHON_GIT_EXECUTABLE="/usr/bin/git"
+export GIT_PYTHON_REFRESH="quiet"
+```
+or add directly these lines before importing git
+```
+import os
+## set
+os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
+os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 ```
 
 ### Roadmap
 
-| Version | Description                           |
-|---------|---------------------------------------|
-| 0.1.0   | clone and pull function               |
+| Version | Description               |
+|---------|---------------------------|
+| 0.1.0   | Clone and pull function   |
+| 0.2.0| Validation implementation |
 
 
 Hopefully, you will enjoy it

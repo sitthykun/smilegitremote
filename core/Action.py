@@ -17,7 +17,6 @@ from core.Model import Model
 from core.ReqValidity import ReqValidity
 from entity.param.Pull import Pull
 from lib.gitlib.GitPyLib import GitPyLib
-from lib.gitlib.GitProcess import GitProcess
 
 
 class Action:
@@ -32,7 +31,6 @@ class Action:
 		# private
 		self.__dateTimeFormat   = '%Y-%m-%d %H:%M:%S'
 		self.__git              = GitPyLib(log)
-		self.__gs               = GitProcess(log)
 		self.__isHeaderJson     = False
 		self.__param            = {}
 		self.__model            = Model(filePath= 'data', log= log)
@@ -119,25 +117,6 @@ class Action:
 		#
 		return self.__respond({'status': 'fail'})
 
-	def __pull2(self, projectId: str, username: str, password: str) -> Any:
-		"""
-
-		:param projectId:
-		:param username:
-		:param password:
-		:return:
-		"""
-		# init
-		commitId = ''
-		# find project
-		project = self.__model.data.getProjectById(projectId)
-
-		# verify dir and compare auth
-		if project.gitDir != '' and project.auth.findUsernamePassword(username= username, password= password):
-			return 'success' if self.__gs.pull() else 'fail'
-
-		return ''
-
 	def __help(self, title: str, method: str, url: str, body: dict, code: int= 200) -> Any:
 		"""
 
@@ -201,7 +180,6 @@ class Action:
 		:return:
 		"""
 		return self.__pull(projectId, username, password)
-		# return self.__pull2(projectId, username, password)
 
 	def pullHelp(self) -> Any:
 		"""
