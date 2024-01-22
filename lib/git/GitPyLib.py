@@ -124,9 +124,11 @@ class GitPyLib:
 		"""
 		try:
 			self.error.setFalse()
-			#
-			self.__repo.git.checkout(branchName)
-			# self.__repo.git.checkout('-b', branchName)
+			# validate
+			if self.__repo.git:
+				#
+				self.__repo.git.checkout(branchName)
+				# self.__repo.git.checkout('-b', branchName)
 
 		except Exception as e:
 			self.error.setTrue(code= 205, message= str(e))
@@ -221,10 +223,10 @@ class GitPyLib:
 
 			#
 			if dir and len(dir) > minPathChars:
-				g   = Repo(dir, search_parent_directories= True)
-				self.log.info(title= 'core.GitPyLib.exist 2', content= f'{dir=}, {g.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
+				self.__repo = Repo(dir, search_parent_directories= True)
+				self.log.info(title= 'core.GitPyLib.exist 2', content= f'{dir=}, {self.__repo.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
 				# check length of path
-				return len(g.remote(remoteOrigin).url) > minPathChars
+				return len(self.__repo.remote(remoteOrigin).url) > minPathChars
 			#
 			elif self.__dir and len(self.__dir) > minPathChars:
 				self.log.info(title= 'core.GitPyLib.exist 3', content= f'{self.__dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
@@ -264,7 +266,7 @@ class GitPyLib:
 		"""
 		try:
 			# https://gist.github.com/igniteflow/1760854
-			return self.__repo.active_branch.name
+			return self.__repo.active_branch.name if self.__repo.active_branch else ''
 
 		except Exception as e:
 			self.log.error(title= 'core.GitPyLib.getBranchName Exception', content= f'{str(e)}')
@@ -276,7 +278,7 @@ class GitPyLib:
 		:return:
 		"""
 		try:
-			return self.__repo.active_branch.remote_name
+			return self.__repo.active_branch.remote_name if self.__repo.active_branch else ''
 
 		except Exception as e:
 			self.log.error(title= 'core.GitPyLib.getBranchRemoteName Exception', content= f'{str(e)}')
@@ -311,21 +313,27 @@ class GitPyLib:
 			#
 			self.error.setFalse()
 
-			# git
-			# self.__repo.remotes.origin.pull()
-			self.__repo.remote(remoteOrigin).pull()
-			self.log.info(title= 'core.GitPyLib.pull 1', content= f'{remoteOrigin=}, {self.__repo.remote(remoteOrigin).url=}')
+			if self.__repo:
+				# git
+				# self.__repo.remotes.origin.pull()
+				self.__repo.remote(remoteOrigin).pull()
+				self.log.info(title= 'core.GitPyLib.pull 1', content= f'{remoteOrigin=}, {self.__repo.remote(remoteOrigin).url=}')
+
+			else:
+				#
+				self.error.setTrue(code= 208, message= 'no reference')
 
 		except Exception as e:
 			self.error.setTrue(code= 202, message= str(e))
 			self.log.error(title= 'core.GitPyLib.pull Exception', content= f'{str(e)}')
 
-	def remote(self, origin: str= 'origin') -> Remote:
+	def remote(self, origin: str= 'origin') -> Remote | None:
 		"""
 
+		:param origin:
 		:return:
 		"""
-		return self.__repo.remote(origin)
+		return self.__repo.remote(origin) if self.__repo else None
 
 	def setRepo(self, dir: str, url: str) -> None:
 		"""
