@@ -16,7 +16,7 @@ from smilelog.Logger import Logger
 from core.Model import Model
 from core.ReqValidity import ReqValidity
 from entity.param.Pull import Pull
-from lib.git.GitPyLib import GitPyLib
+from lib.gitlib.GitPyLib import GitPyLib
 
 
 class Action:
