@@ -7,10 +7,14 @@
 .idea/
 .idea/*
 
-# vendor
+# package
 .venv
 .venv/
 .venv/*
+venv
+venv/
+venv/*
+
 
 # os
 .DS_Store
@@ -28,3 +32,8 @@ node_modules/*
 
 # smilelogger
 log/*.log
+
+# data
+data
+data/
+data/*
