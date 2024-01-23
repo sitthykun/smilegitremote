@@ -15,7 +15,7 @@ from typing import Any
 from flask import Flask
 from smilelog.Logger import Logger
 # internal
-from core.Action import Action
+from vamp.Action import Action
 
 
 # instance
@@ -32,6 +32,13 @@ def home() -> Any:
     return 'Miss Mom', 200
 
 
+@app.route('/checkout/<string:projectId>', methods= ['POST'])
+def checkoutProjectPost(projectId: str) -> Any:
+    #
+    return Action(log).pullPost(
+        projectId   = projectId
+    )
+
 @app.route('/pull/<string:projectId>', methods= ['POST'])
 def pullProjectPost(projectId: str) -> Any:
     #
@@ -41,14 +48,14 @@ def pullProjectPost(projectId: str) -> Any:
 
 
 # route
-@app.route('/pull/<string:projectId>/<string:username>/<string:password>', methods= ['GET'])
-def pullProjectGet(projectId: str, username: str, password: str) -> Any:
-    #
-    return Action(log).pullGet(
-        projectId   = projectId
-        , username  = username
-        , password  = password
-    )
+# @app.route('/pull/<string:projectId>/<string:username>/<string:password>', methods= ['GET'])
+# def pullProjectGet(projectId: str, username: str, password: str) -> Any:
+#     #
+#     return Action(log).pullGet(
+#         projectId   = projectId
+#         , username  = username
+#         , password  = password
+#     )
 
 
 @app.route('/pull/help', methods= ['GET'])

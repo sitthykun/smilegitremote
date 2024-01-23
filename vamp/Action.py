@@ -10,13 +10,15 @@ import datetime
 import json
 from typing import Any
 # external
-from flask import request, jsonify
+from flask import request
 from smilelog.Logger import Logger
 # internal
-from core.Model import Model
-from core.ReqValidity import ReqValidity
+from entity.data.Project import Project
 from entity.param.Pull import Pull
-from lib.gitlib.GitPyLib import GitPyLib
+from core.gitlib.GitPyLib import GitPyLib
+from vamp.Model import Model
+from vamp.ReqValidity import ReqValidity
+from vamp.Response import Response
 
 
 class Action:
@@ -29,14 +31,78 @@ class Action:
 		:param log:
 		"""
 		# private
-		self.__dateTimeFormat   = '%Y-%m-%d %H:%M:%S'
+		# self.__dataProject      = Project()
 		self.__git              = GitPyLib(log)
 		self.__isHeaderJson     = False
 		self.__param            = {}
 		self.__model            = Model(filePath= 'data', log= log)
 		self.__reqVal           = ReqValidity(log)
+		self.__res              = Response()
 		# public
 		self.log                = log
+
+	def __checkout(self, projectId: str, branchName: str, username: str, password: str) -> dict:
+		"""
+
+		:param projectId:
+		:param branchName:
+		:param username:
+		:param password:
+		:return:
+		"""
+		# init
+		commitId    = ''
+		# find project
+		project     = self.__model.data.getProjectById(projectId)
+		# verify dir and compare auth
+		if project.gitDir != '' and project.auth.findUsernamePassword(username= username, password= password):
+			#
+			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
+				# instance first
+				self.__git.setRepo(project.gitDir, project.gitRemoteURL)
+
+				#
+				if self.__git.error.isTrue():
+					return self.__res.Fail(self.__git.error.getMessage(), 400)
+				#
+				else:
+					# compare the branch to avoid broken something on next step after checkout branch or any source inside
+					# the current directory
+					if self.__git.getBranchName() != project.gitBranch:
+						# checkout the branch
+						self.__git.checkout(branchName)
+
+						# found error
+						if self.__git.error.isTrue():
+							return self.__res.Fail(self.__git.error.getMessage(), 400)
+
+						#
+						else:
+							#
+							commitId = self.__git.getCommitHash()
+
+							#
+							return self.__res.Success(
+								env             = project.env
+								, projectName   = project.name
+								, branchName    = branchName
+								, commitId      = commitId
+							)
+					#
+					else:
+						#
+						commitId = self.__git.getCommitHash()
+						#
+						return self.__res.Success(
+							env             = project.env
+							, projectName   = project.name
+							, branchName    = project.gitBranch
+							, commitId      = commitId
+						)
+			# fail
+			return self.__res.Fail('Not found git directory', 400)
+		# fail
+		return self.__res.Fail('No directory', 400)
 
 	def __pull(self, projectId: str, username: str, password: str) -> dict:
 		"""
@@ -58,8 +124,9 @@ class Action:
 				# if no dir, it will automatically create a new one
 				self.__git.cloneFrom(project.gitRemotePrivateURL, project.gitDir)
 
+				# found error
 				if self.__git.error.isTrue():
-					return self.__respond(self.__git.error.getMessage(), 400)
+					return self.__res.Fail(self.__git.error.getMessage(), 400)
 
 				else:
 					commitId = self.__git.getCommitHash()
@@ -75,9 +142,10 @@ class Action:
 
 				#
 				if self.__git.error.isTrue():
-					return self.__respond(self.__git.error.getMessage(), 400)
+					return self.__res.Fail(self.__git.error.getMessage(), 400)
 
 			self.log.warning(title= 'core.Action.pullGet 3', content= f'directory branch: {self.__git.getBranchName()}, request branch: {project.gitBranch}')
+
 			# compare the branch to avoid broken something on next step after checkout branch or any source inside
 			# the current directory
 			if self.__git.getBranchName() != project.gitBranch:
@@ -86,7 +154,7 @@ class Action:
 
 				#
 				if self.__git.error.isTrue():
-					return self.__respond(self.__git.error.getMessage(), 400)
+					return self.__res.Fail(self.__git.error.getMessage(), 400)
 
 			# # fetch the remote
 			# self.__git.fetch()
@@ -97,25 +165,23 @@ class Action:
 			# get a new code
 			self.__git.pull(project.gitRemoteOrigin)
 
-			#
+			# found error
 			if self.__git.error.isTrue():
-				return self.__respond(self.__git.error.getMessage(), 400)
+				return self.__res.Fail(self.__git.error.getMessage(), 400)
 
 			# the latest step
 			commitId    = self.__git.getCommitHash()
 			self.log.warning(title= 'core.Action.pullGet 2', content= f'{commitId}')
 
 			#
-			return self.__respond({
-				'status'        : 'success'
-				, 'env'         : project.env
-				, 'project_name': project.name
-				, 'branch_name' : project.gitBranch
-				, 'commit'      : commitId
-				, 'datetime'    : datetime.datetime.utcnow().strftime(self.__dateTimeFormat)
-			})
+			return self.__res.Success(
+				env             = project.env
+				, projectName   = project.name
+				, branchName    = project.gitBranch
+				, commitId      = commitId
+			)
 		#
-		return self.__respond({'status': 'fail'})
+		return self.__res.Fail('Totally, cannot pull', 400)
 
 	def __help(self, title: str, method: str, url: str, body: dict, code: int= 200) -> Any:
 		"""
@@ -129,46 +195,22 @@ class Action:
 		"""
 		return {f'{title}_document': {'method': method, 'url': url, 'body': body}}, code
 
-	def __respond(self, data: dict, code: int= 200) -> Any:
+	def checkoutPost(self, projectId: str, branchName: str, username: str, password: str, isJson: bool= False) -> Any:
 		"""
 
-		:param data:
-		:param code:
+		:param projectId:
+		:param branchName:
+		:param username:
+		:param password:
+		:param isJson:
 		:return:
 		"""
-		#
-		if self.__isHeaderJson:
-			if isinstance(data, dict):
-				r               = jsonify(data)
-				r.status_code   = code
-				return r
-
-			elif isinstance(data, str):
-				r               = jsonify({'data': data})
-				r.status_code   = code
-				#
-				return r
-
-			elif isinstance(data, int):
-				r               = jsonify({'data': data})
-				r.status_code   = code
-				#
-				return r
-		#
-		return data, code
-
-	def __setHeaderJson(self) -> None:
-		"""
-
-		:return:
-		"""
-		#
-		contentType = request.headers.get('Content-Type')
-
-		#
-		if contentType == 'application/json':
-			self.__isHeaderJson = True
-			self.__param        = request.json
+		return self.__checkout(
+			projectId   = projectId
+			, username  = username
+			, password  = password
+			, branchName= branchName
+		)
 
 	def pullGet(self, projectId: str, username: str, password: str, isJson: bool= False) -> Any:
 		"""
@@ -179,7 +221,11 @@ class Action:
 		:param isJson:
 		:return:
 		"""
-		return self.__pull(projectId, username, password)
+		return self.__pull(
+			projectId   = projectId
+			, username  = username
+			, password  = password
+		)
 
 	def pullHelp(self) -> Any:
 		"""
@@ -194,10 +240,6 @@ class Action:
 		:param projectId:
 		:return:
 		"""
-		#
-		self.__setHeaderJson()
-		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
-
 		#
 		return self.pullGet(
 			projectId   = projectId

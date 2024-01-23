@@ -224,7 +224,7 @@ class GitPyLib:
 			#
 			if dir and len(dir) > minPathChars:
 				self.__repo = Repo(dir, search_parent_directories= True)
-				self.log.info(title= 'core.GitPyLib.exist 2', content= f'{dir=}, {self.__repo.working_tree_dir=}, {g.remote(remoteOrigin).url=}')
+				self.log.info(title= 'core.GitPyLib.exist 2', content= f'{dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
 				# check length of path
 				return len(self.__repo.remote(remoteOrigin).url) > minPathChars
 			#
