@@ -103,41 +103,52 @@ $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\",
 
 ## Server Deployment
 ### GUnicorn
-If you need to configure Linux server, I recommend to run wsgi instead.
+If service needs running on Linux/Unix server, it should point the service path to wsgi.py instead of main.py.
+This wsgi.py was designed for the OS system service purpose, and recommends guincorn or uvicorn
 Example:
 ```
 $ gunicorn --bind 127.0.0.1:5000 wsgi:app
 ```
 
 ### Bash profile
-If it raised this error message or any kind of unrecognised git command
+Some systems are not yet ready with git command, it will raise a common error message or any kind of unrecognised git command or not found the file or directory.
 ```
 Cmd('git') not found due to: FileNotFoundError('[Errno 2] No such file or directory: 'git'')
 ```
 
-Please try adding these lines to your current theme profile such as .bashrc
+Calm down and try adding these lines to your current theme profile such as .bashrc
 ```
 # gitpython
 export PATH=$PATH:/usr/bin/git
 export GIT_PYTHON_GIT_EXECUTABLE="/usr/bin/git"
 export GIT_PYTHON_REFRESH="quiet"
 ```
-or add directly these lines before importing git
+or add directly these lines before importing git namespace inside the code
 ```
+# built-in
 import os
 ## set
 os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
 os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
+...
+import git
+from git import Repo, Remote
+from git.exc import GitError, GitCommandError, ...
+```
+
+If not sure about where git is located, try with the command
+```
+$ which git
 ```
 
 ### Roadmap
 
-| Version | Status  | Description               |
-|---------|--------------------------|---------|
-| 0.1.0   | current | Clone and pull function|   
-| 0.2.0| dev     | Validation implementation |
+| Version | Status  | Description                                          |
+|---------|--------------------------|------------------------------------------------------|
+| 0.1.0   | current | Clone, checkout a branch and pull function           |   
+| 0.2.0| dev     | Validating implementation for the request parameters |
 
 
-Hopefully, you will enjoy it
+Hopefully, you will enjoy on Linux and MacOS
 
 To Support my work, please donate me via <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/sitthykun"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a Pizza"><span style="margin-left:5px;font-size:28px !important;">Buy me a Coffee</span></a>
