@@ -9,7 +9,7 @@ Use a web service (microservice) to remote git's command
   - data directory: contains git profiles, others json file
   - entity directory: stores the data mapping of the json file and others
 - Framework
-  - Flask 3.0.0: To create a service, this project implements Flask 3.0.0 and tried 3.0.1(not yet official)
+  - Flask 3.0.0: To create a service, this project implements Flask 3.0.0 and upgraded to Flask 3.0.1
 - Libraries
   - Gitpython: In the early idea of my code, I wrote all by integrating git command. This library is still alive until now, that is why, I decide to use and do not want to write my own code. It's the core library which runs behind the Git class
   - SmileError: To catch the error in a better way
