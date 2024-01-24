@@ -13,11 +13,10 @@ from typing import Any
 from flask import request
 from smilelog.Logger import Logger
 # internal
+import entity.Params as EParam
 from entity.data.Project import Project
-from entity.param.Pull import Pull
-from core.gitlib.GitPyLib import GitPyLib
+from core.CGit import CGit
 from vamp.Model import Model
-from vamp.ReqValidity import ReqValidity
 from vamp.Response import Response
 
 
@@ -32,11 +31,10 @@ class Action:
 		"""
 		# private
 		# self.__dataProject      = Project()
-		self.__git              = GitPyLib(log)
+		self.__git              = CGit(log)
 		self.__isHeaderJson     = False
 		self.__param            = {}
 		self.__model            = Model(filePath= 'data', log= log)
-		self.__reqVal           = ReqValidity(log)
 		self.__res              = Response()
 		# public
 		self.log                = log
@@ -183,56 +181,18 @@ class Action:
 		#
 		return self.__res.Fail('Totally, cannot pull', 400)
 
-	def __help(self, title: str, method: str, url: str, body: dict, code: int= 200) -> Any:
-		"""
-
-		:param title:
-		:param method:
-		:param url:
-		:param body:
-		:param code:
-		:return:
-		"""
-		return {f'{title}_document': {'method': method, 'url': url, 'body': body}}, code
-
-	def checkoutPost(self, projectId: str, branchName: str, username: str, password: str, isJson: bool= False) -> Any:
+	def checkoutPost(self, projectId: str) -> Any:
 		"""
 
 		:param projectId:
-		:param branchName:
-		:param username:
-		:param password:
-		:param isJson:
 		:return:
 		"""
 		return self.__checkout(
 			projectId   = projectId
-			, username  = username
-			, password  = password
-			, branchName= branchName
+			, username  = self.__param.get(EParam.Checkout.USERNAME)
+			, password  = self.__param.get(EParam.Checkout.PASSWORD)
+			, branchName= self.__param.get(EParam.Checkout.BRANCH_NAME)
 		)
-
-	def pullGet(self, projectId: str, username: str, password: str, isJson: bool= False) -> Any:
-		"""
-
-		:param projectId:
-		:param username:
-		:param password:
-		:param isJson:
-		:return:
-		"""
-		return self.__pull(
-			projectId   = projectId
-			, username  = username
-			, password  = password
-		)
-
-	def pullHelp(self) -> Any:
-		"""
-
-		:return:
-		"""
-		return self.__help(title= 'pull', method= 'post', url= 'https://domain/pull/projectId', body= {'username':'xxx', 'password': 'xxx'})
 
 	def pullPost(self, projectId: str) -> Any:
 		"""
@@ -241,8 +201,8 @@ class Action:
 		:return:
 		"""
 		#
-		return self.pullGet(
+		return self.__pull(
 			projectId   = projectId
-			, username  = self.__param.get(Pull.USERNAME)
-			, password  = self.__param.get(Pull.PASSWORD)
+			, username  = self.__param.get(EParam.Pull.USERNAME)
+			, password  = self.__param.get(EParam.Pull.PASSWORD)
 		)

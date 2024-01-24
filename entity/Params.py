@@ -5,9 +5,15 @@ Package: project
 Note:
 Version: 1.0.0
 """
-# built-in
-# external
-from smileerror.ErrorBase import ErrorBase
+
+
+class Checkout:
+	"""
+
+	"""
+	BRANCH_NAME = 'branch'
+	PASSWORD    = 'password'
+	USERNAME    = 'username'
 
 
 class Pull:

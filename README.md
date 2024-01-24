@@ -145,9 +145,9 @@ $ which git
 
 | Version | Status  | Description                                          |
 |---------|---------|------------------------------------------------------|
-| 0.1.0   | current | Clone, checkout a branch and pull function           |   
-| 0.2.0   | dev     | Validating implementation for the request parameters |
-| 0.3.0   | dev     | Enable trigger (before and after)                    |
+| 0.1.0   | current | Clone, checkout a branch and pull function           |
+| 0.2.0   | dev     | Enable trigger (before and after)                    |
+| 0.3.0   | dev     | Validating implementation for the request parameters |
 
 
 Hopefully, you will enjoy on Linux and MacOS

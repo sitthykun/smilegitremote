@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 0.1.0
+Version: 0.1.1
 """
 # built-in
 import os
@@ -15,7 +15,10 @@ from typing import Any
 from flask import Flask
 from smilelog.Logger import Logger
 # internal
+from help.Help import Help
 from vamp.Action import Action
+from vamp.Response import Response
+from vamp.Validation import Validation
 
 
 # instance
@@ -31,37 +34,25 @@ def home() -> Any:
     #
     return 'Miss Mom', 200
 
-
 @app.route('/checkout/<string:projectId>', methods= ['POST'])
 def checkoutProjectPost(projectId: str) -> Any:
     #
-    return Action(log).pullPost(
-        projectId   = projectId
-    )
+    return Response().Fail(errorMessage= 'checkout project post', errorNum= 100) if not Validation(log).checkoutPost() else Action(log).checkoutPost(projectId= projectId)
+
+@app.route('/checkout/help', methods= ['GET'])
+def checkoutProjectHelp() -> Any:
+    #
+    return Help().checkout()
 
 @app.route('/pull/<string:projectId>', methods= ['POST'])
 def pullProjectPost(projectId: str) -> Any:
     #
-    return Action(log).pullPost(
-        projectId   = projectId
-    )
-
-
-# route
-# @app.route('/pull/<string:projectId>/<string:username>/<string:password>', methods= ['GET'])
-# def pullProjectGet(projectId: str, username: str, password: str) -> Any:
-#     #
-#     return Action(log).pullGet(
-#         projectId   = projectId
-#         , username  = username
-#         , password  = password
-#     )
-
+    return Response().Fail(errorMessage= 'pull project post', errorNum= 200) if not Validation(log).pullPost() else Action(log).pullPost(projectId= projectId)
 
 @app.route('/pull/help', methods= ['GET'])
 def pullProjectHelp() -> Any:
     #
-    return Action(log).pullHelp()
+    return Help().pull()
 
 
 # run server
