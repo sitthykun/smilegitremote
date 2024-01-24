@@ -60,7 +60,7 @@ Find data/project.json
 Above the project.json has only a valid project is '123'
 
 ## Create a post route:
-Check out in main.py along root directory
+Check out main.py in alongside root directory
 ```
 # built-in
 from typing import Any
@@ -104,7 +104,7 @@ $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\",
 ## Server Deployment
 ### GUnicorn
 If service needs running on Linux/Unix server, it should point the service path to wsgi.py instead of main.py.
-This wsgi.py was designed for the OS system service purpose, and recommends guincorn or uvicorn
+This wsgi.py was designed for the OS system service purpose, and recommends guincorn or uvicorn\
 Example:
 ```
 $ gunicorn --bind 127.0.0.1:5000 wsgi:app
@@ -127,7 +127,7 @@ or add directly these lines before importing git namespace inside the code
 ```
 # built-in
 import os
-## set
+# set
 os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
 os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 ...
@@ -139,6 +139,7 @@ from git.exc import GitError, GitCommandError, ...
 If not sure about where git is located, try with the command
 ```
 $ which git
+/usr/bin/git
 ```
 
 ### Roadmap
