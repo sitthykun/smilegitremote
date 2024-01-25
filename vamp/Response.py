@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 # built-in
 import datetime
@@ -33,49 +33,22 @@ class Response:
 		"""
 		return datetime.datetime.utcnow().strftime(self.__dateTimeFormat)
 
-	def __respond(self, data: dict, code: int= 200) -> Any:
+	def __respond(self, status: str, data: dict, code: int= 200) -> Any:
 		"""
 
+		:param status:
 		:param data:
 		:param code:
 		:return:
 		"""
 		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
-		self.__setHeaderJson()
+		# append datetime
+		data.update({'datetime': self.__getDateTime()})
 		#
-		if self.__isHeaderJson:
-			if isinstance(data, dict):
-				r               = jsonify(data)
-				r.status_code   = code
-				return r
-
-			elif isinstance(data, str):
-				r               = jsonify({'data': data})
-				r.status_code   = code
-				#
-				return r
-
-			# default
-			elif isinstance(data, int):
-				r               = jsonify({'data': data})
-				r.status_code   = code
-				#
-				return r
+		r   = jsonify({'status': status, 'data': data})
+		r.status_code = code
 		#
-		return data, code
-
-	def __setHeaderJson(self) -> None:
-		"""
-
-		:return:
-		"""
-		#
-		contentType = request.headers.get('Content-Type')
-
-		#
-		if contentType == 'application/json':
-			self.__isHeaderJson = True
-			self.__param        = request.json
+		return r
 
 	def Fail(self, errorMessage: str, errorNum: int, status: str= 'fail', hsc: int = 400) -> dict:
 		"""
@@ -87,13 +60,12 @@ class Response:
 		:return:
 		"""
 		return self.__respond(
-			data    = {
-				'status'        : status
-				, 'error'       : {
+			status  = status
+			, data  = {
+				'error'     : {
 					'code'      : errorNum
 					, 'message' : errorMessage
 				}
-				, 'datetime'    : self.__getDateTime()
 			}
 			, code  = hsc
 		)
@@ -110,13 +82,12 @@ class Response:
 		:return:
 		"""
 		return self.__respond(
-			data    = {
-				'status'        : status
-				, 'env'         : env
+			status  = status
+			, data  = {
+				'env'           : env
 				, 'project_name': projectName
 				, 'branch_name' : branchName
 				, 'commit'      : commitId
-				, 'datetime'    : self.__getDateTime()
 			}
 			, code  = hsc
 		)

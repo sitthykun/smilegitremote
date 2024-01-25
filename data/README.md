@@ -6,7 +6,7 @@ Just use standard file instead using any database application
 - role.json
 
 # auth.json
-- not require:
+- no require:
   - username
   - password
   - role
@@ -14,7 +14,7 @@ Just use standard file instead using any database application
   - none
 
 # project.json
-- not require:
+- no require:
 	- datetime_format as string format
     - env as string
     - git_remote_url as string
@@ -30,7 +30,7 @@ Just use standard file instead using any database application
   - git_remote_url
 
 # role.json
-- not require:
+- no require:
   - role
   - enable
 - require:
