@@ -135,6 +135,7 @@ import git
 from git import Repo, Remote
 from git.exc import GitError, GitCommandError, ...
 ```
+or try extending a git package via inherit of OOP concept. Make our python code looks clean.
 
 If not sure about where git is located, try with the command
 ```
