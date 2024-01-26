@@ -37,7 +37,16 @@ class Help:
 
 		:return:
 		"""
-		return Help().__help(title= 'checkout', method= 'post', url= 'checkout/<projectId>', body= {f'{EParam.Checkout.USERNAME}': 'xxx', f'{EParam.Checkout.PASSWORD}': 'xxx', f'{EParam.Checkout.BRANCH_NAME}': 'xxx'})
+		return Help().__help(
+			title   = 'checkout'
+			, method= 'post'
+			, url   = 'checkout/<projectId>'
+			, body  = {
+				f'{EParam.Checkout.USERNAME}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Checkout.PASSWORD}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Checkout.BRANCH_NAME}{EParam._REQUIRE}': 'xxx'
+			}
+		)
 
 	@staticmethod
 	def pull() -> dict:
@@ -45,4 +54,16 @@ class Help:
 
 		:return:
 		"""
-		return Help().__help(title= 'pull', method= 'post', url= 'pull/<projectId>', body= {f'{EParam.Pull.USERNAME}': 'xxx', f'{EParam.Pull.PASSWORD}': 'xxx'})
+		return Help().__help(
+			title   = 'pull'
+			, method= 'post'
+			, url   = 'pull/<projectId>'
+			, body  = {
+				f'{EParam.Pull.USERNAME}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Pull.PASSWORD}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Pull.TRIGGER}{EParam._OPTIONAL}': {
+					f'{EParam.PullTrigger.BEFORE}{EParam._OPTIONAL}': 'xxx xxx xxx'
+					, f'{EParam.PullTrigger.AFTER}{EParam._OPTIONAL}': 'xxx xxx xxx'
+				}
+			}
+		)

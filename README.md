@@ -1,7 +1,20 @@
 # Smile Git Remote
 Use a web service (microservice) to remote git's command
+
+## Version 0.2.0
+The trigger is implemented with two events are the before and after.
+- before: contains a list of commands
+- after: is the same as before event but it will execute after complete the main process
+
+```
+"trigger": {
+  "before": []
+  , "after": []
+}
+```
+
 ## Version 0.1.0
-- This project lets us pull a repo via a website that installed and set configuration
+- This project lets us pull a repo via a website that installed
 - Using OOP and make a simple structure in Python 3.x
 - Project structure
   - main.py is a startup and route collecting
@@ -9,7 +22,7 @@ Use a web service (microservice) to remote git's command
   - data directory: contains git profiles, others json file
   - entity directory: stores the data mapping of the json file and others
 - Framework
-  - Flask 3.0.0: To create a service, this project implements Flask 3.0.0 and upgraded to Flask 3.0.1
+  - Flask 3.0.0: To create a service, this project implements Flask 3.0.1
 - Libraries
   - Gitpython: In the early idea of my code, I wrote all by integrating git command. This library is still alive until now, that is why, I decide to use and do not want to write my own code. It's the core library which runs behind the Git class
   - SmileError: To catch the error in a better way

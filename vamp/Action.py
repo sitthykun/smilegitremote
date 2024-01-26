@@ -16,6 +16,7 @@ from smilelog.Logger import Logger
 import entity.Params as EParam
 from entity.data.Project import Project
 from core.CGit import CGit
+from core.Trigger import Trigger
 from vamp.Model import Model
 from vamp.Response import Response
 
@@ -36,6 +37,7 @@ class Action:
 		self.__param            = {}
 		self.__model            = Model(filePath= 'data', log= log)
 		self.__res              = Response()
+		self.__trigger          = Trigger()
 		# public
 		self.log                = log
 
@@ -102,6 +104,22 @@ class Action:
 		# fail
 		return self.__res.Fail('No directory', 400)
 
+	def __doAfter(self, command: list) -> None:
+		"""
+
+		:param command:
+		:return:
+		"""
+		self.__trigger.doAfter(command)
+
+	def __doBefore(self, command: list) -> None:
+		"""
+
+		:param command:
+		:return:
+		"""
+		self.__trigger.doBefore(command)
+
 	def __pull(self, projectId: str, username: str, password: str) -> dict:
 		"""
 
@@ -117,6 +135,9 @@ class Action:
 
 		# verify dir and compare auth
 		if project.gitDir != '' and project.auth.findUsernamePassword(username= username, password= password):
+			# run before
+			self.__doBefore(project.trigger.before)
+
 			#
 			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# if no dir, it will automatically create a new one
@@ -170,6 +191,9 @@ class Action:
 			# the latest step
 			commitId    = self.__git.getCommitHash()
 			self.log.warning(title= 'core.Action.pullGet 2', content= f'{commitId}')
+
+			# run after
+			self.__doAfter(project.trigger.after)
 
 			#
 			return self.__res.Success(
