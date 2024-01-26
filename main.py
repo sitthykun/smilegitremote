@@ -17,7 +17,6 @@ from smilelog.Logger import Logger
 # internal
 from help.Help import Help
 from vamp.Action import Action
-from vamp.Response import Response
 from vamp.Validation import Validation
 
 
@@ -37,7 +36,7 @@ def home() -> Any:
 @app.route('/checkout/<string:projectId>', methods= ['POST'])
 def checkoutProjectPost(projectId: str) -> Any:
     #
-    return Response().Fail(errorMessage= 'checkout project post', errorNum= 100) if not Validation(log).checkoutPost() else Action(log).checkoutPost(projectId= projectId)
+    return Validation(log).fail(message= 'checkout project post') if not Validation(log).checkoutPost() else Action(log).checkoutPost(projectId= projectId)
 
 @app.route('/checkout/help', methods= ['GET'])
 def checkoutProjectHelp() -> Any:
@@ -47,7 +46,7 @@ def checkoutProjectHelp() -> Any:
 @app.route('/pull/<string:projectId>', methods= ['POST'])
 def pullProjectPost(projectId: str) -> Any:
     #
-    return Response().Fail(errorMessage= 'pull project post', errorNum= 200) if not Validation(log).pullPost() else Action(log).pullPost(projectId= projectId)
+    return Validation(log).fail(message= 'pull project post') if not Validation(log).pullPost() else Action(log).pullPost(projectId= projectId)
 
 @app.route('/pull/help', methods= ['GET'])
 def pullProjectHelp() -> Any:

@@ -50,7 +50,7 @@ class Response:
 		#
 		return r
 
-	def Fail(self, errorMessage: str, errorNum: int, status: str= 'fail', hsc: int = 400) -> dict:
+	def fail(self, errorMessage: str, errorNum: int, status: str= 'fail', hsc: int = 400) -> dict:
 		"""
 
 		:param errorMessage:
@@ -70,7 +70,7 @@ class Response:
 			, code  = hsc
 		)
 
-	def Success(self, env: str, projectName: str, branchName: str, commitId: str, status: str= 'success', hsc: int = 200) -> dict:
+	def success(self, env: str, projectName: str, branchName: str, commitId: str, status: str= 'success', hsc: int = 200) -> dict:
 		"""
 
 		:param env:

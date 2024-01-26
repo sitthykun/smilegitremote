@@ -51,7 +51,6 @@ class Trigger:
 
 			#
 			filename    = f'{self.__dirExec}/{filename}'
-			# os.system(f'{self.__bashExec} -c {command}')
 			# subprocess.run(command, shell= True, executable= self.__bashExec)
 			result      = subprocess.check_output(
 				command
@@ -137,7 +136,9 @@ class Trigger:
 		:param command:
 		:return:
 		"""
+		#
 		for c in command:
+			#
 			self.__doSys(c)
 
 	def doBefore(self, command: list) -> None:
@@ -146,5 +147,7 @@ class Trigger:
 		:param command:
 		:return:
 		"""
+		#
 		for c in command:
+			#
 			self.__doSys(c)
