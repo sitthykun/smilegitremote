@@ -36,7 +36,7 @@ def home() -> Any:
 @app.route('/checkout/<string:projectId>', methods= ['POST'])
 def checkoutProjectPost(projectId: str) -> Any:
     #
-    return Validation(log).fail(message= 'checkout project post') if not Validation(log).checkoutPost() else Action(log).checkoutPost(projectId= projectId)
+    return Action(log).checkoutPost(projectId= projectId) if Validation(log).checkoutPost() else Validation(log).fail(message= 'checkout project post')
 
 @app.route('/checkout/help', methods= ['GET'])
 def checkoutProjectHelp() -> Any:
@@ -46,7 +46,7 @@ def checkoutProjectHelp() -> Any:
 @app.route('/pull/<string:projectId>', methods= ['POST'])
 def pullProjectPost(projectId: str) -> Any:
     #
-    return Validation(log).fail(message= 'pull project post') if not Validation(log).pullPost() else Action(log).pullPost(projectId= projectId)
+    return Action(log).pullPost(projectId= projectId) if Validation(log).pullPost() else Validation(log).fail(message= 'pull project post')
 
 @app.route('/pull/help', methods= ['GET'])
 def pullProjectHelp() -> Any:
