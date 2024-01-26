@@ -27,8 +27,10 @@ class Trigger:
 		self.__bashExec = bashExec if bashExec else '/bin/bash'
 		self.__dirExec  = dirExec if dirExec else 'temp'
 		# # temporary files
-		self.__tBefore  = f'{random.randint(1, 50)}.sh'
-		self.__tAfter   = f'{random.randint(51, 99)}.sh'
+		self.__eBefore  = f'{random.randint(1, 50)}.sh'
+		self.__eAfter   = f'{random.randint(51, 99)}.sh'
+		# #
+		self.__message  = []
 		# public
 		self.error      = ErrorBase()
 
@@ -39,16 +41,37 @@ class Trigger:
 		:param command:
 		:return:
 		"""
+		#
+		result = ''
+
+		#
 		try:
 			#
 			self.error.setFalse()
 
 			#
 			filename    = f'{self.__dirExec}/{filename}'
-			os.system(f'{self.__bashExec} -c {command}')
+			# os.system(f'{self.__bashExec} -c {command}')
+			# subprocess.run(command, shell= True, executable= self.__bashExec)
+			result      = subprocess.check_output(
+				command
+				, shell     = True
+				, executable= self.__bashExec
+				, stderr    = subprocess.STDOUT
+			)
+
+		except subprocess.CalledProcessError as e:
+			self.error.setTrue(code= 505, message= str(e))
+			result = e.output
 
 		except Exception as e:
 			self.error.setTrue(code= 501, message= str(e))
+
+		finally:
+			#
+			for line in result.splitlines():
+				#
+				self.__message.append(line.decode())
 
 	def __doSys(self, command: str) -> None:
 		"""
