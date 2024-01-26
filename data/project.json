@@ -23,8 +23,8 @@
 	  , "name": "test website"
 	  , "note": "test project website"
 	  , "trigger": {
-		"before": [""]
-		, "after": [""]
+		"before": ["echo 'Start'"]
+		, "after": ["echo 'Finish"]
 	  }
 	  , "white_ip": ["192.168.2.3","192.168.2.4"]
 	}

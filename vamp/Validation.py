@@ -29,6 +29,26 @@ class Validation:
 		# public
 		self.log    = log
 
+	def __validIP(self, ipList: list) -> bool:
+		"""
+
+		:return:
+		"""
+		# https://stackabuse.com/how-to-get-users-ip-address-using-flask/
+		# clientIp= request.remote_addr
+		# clientIp= request.environ['REMOTE_ADDR']
+		clientIp= request.environ['HTTP_X_FORWARDED_FOR']
+		# clientIp= request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+		found   = False
+
+		#
+		if ipList:
+			for ip in ipList:
+				if ip == clientIp:
+					found   = True
+		# found
+		return found
+
 	def checkoutPost(self) -> bool:
 		"""
 
