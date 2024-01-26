@@ -111,7 +111,7 @@ $ gunicorn --bind 127.0.0.1:5000 wsgi:app
 ```
 
 ### Bash profile
-Some systems are not yet ready with git command, it will raise a common error message or any kind of unrecognised git command or not found the file or directory.
+The git command is not yet compatible with some systems, which may result in a common error message, an unrecognized git command, or a failure to locate the file or directory.
 ```
 Cmd('git') not found due to: FileNotFoundError('[Errno 2] No such file or directory: 'git'')
 ```
