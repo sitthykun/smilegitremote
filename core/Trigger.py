@@ -83,8 +83,8 @@ class Trigger:
 			#
 			self.error.setFalse()
 
-			#
-			os.system(f'{self.__bashExec} -c {command}')
+			# use c port via bash with -c option
+			os.system(f'{self.__bashExec} -c "{command}"')
 
 		except Exception as e:
 			self.error.setTrue(code= 502, message= str(e))
