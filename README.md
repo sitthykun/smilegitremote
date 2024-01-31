@@ -38,15 +38,12 @@ Find data/project.json
 	"123": {
 	  "auth": [
 		{
-		  "password": "123456"
 		  , "username": "kara"
 		}
 		, {
-		  "password": "123456"
 		  , "username": "jojo"
 		}
 	  ]
-	  , "datetime_format": "%Y-%m-%d %H:%M:%S"
 	  , "env": "pro"
 	  , "force_clone": "true"
 	  , "force_pull": "true"
