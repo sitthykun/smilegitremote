@@ -142,7 +142,7 @@ The right output should be like this
       "username*": "xxx"
     },
     "method": "post",
-    "url": "https://domain/token"
+    "url": "https://domain/token/"
   }
 }
 ```
