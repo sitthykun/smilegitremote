@@ -15,7 +15,7 @@ class Checkout:
 
 	"""
 	BRANCH_NAME = 'branch'
-	PASSWORD    = 'password'
+	TOKEN       = 'token'
 	USERNAME    = 'username'
 
 
@@ -23,9 +23,9 @@ class Pull:
 	"""
 
 	"""
-	PASSWORD    = 'password'
 	ROLE        = 'role'
 	TRIGGER     = 'trigger'
+	TOKEN       = 'token'
 	USERNAME    = 'username'
 
 
@@ -35,3 +35,8 @@ class PullTrigger:
 	"""
 	BEFORE      = 'before'
 	AFTER       = 'after'
+
+
+class Token:
+	PASSWORD    = 'password'
+	USERNAME    = 'username'

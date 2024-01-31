@@ -3,12 +3,10 @@
 	"123": {
 	  "auth": [
 		{
-		  "password": "123456"
-		  , "username": "kara"
+		  "username": "kara"
 		}
 		, {
-		  "password": "123456"
-		  , "username": "jojo"
+		  "username": "jojo"
 		}
 	  ]
 	  , "env": "pro"
@@ -24,7 +22,7 @@
 	  , "note": "test project website"
 	  , "trigger": {
 		"before": ["echo 'Start'"]
-		, "after": ["echo 'Finish"]
+		, "after": ["echo 'Finish'"]
 	  }
 	  , "white_ip": ["192.168.2.3","192.168.2.4"]
 	}

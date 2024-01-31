@@ -20,6 +20,10 @@ class Model(ErrorBase):
 	"""
 
 	"""
+	AUTH    = 'auth'
+	PROJECT = 'project'
+	ROLE    = 'role'
+
 	def __init__(self, filePath: str, log: Logger):
 		"""
 
@@ -34,9 +38,9 @@ class Model(ErrorBase):
 
 		# public
 		self.data       = Data(
-			auth        = self.__readList(f'{self.__filePath}/auth.json')
-			, project   = self.__readDict(f'{self.__filePath}/project.json')
-			, role      = self.__readList(f'{self.__filePath}/role.json')
+			auth        = self.__readList(f'{self.__filePath}/{self.AUTH}.json')
+			, project   = self.__readDict(f'{self.__filePath}/{self.PROJECT}.json')
+			, role      = self.__readList(f'{self.__filePath}/{self.ROLE}.json')
 		)
 		self.log        = log
 
@@ -81,3 +85,10 @@ class Model(ErrorBase):
 			self.log.error(title= 'core.Model.__readList Exception', content= f'{str(e)}')
 			# empty
 			return []
+
+	def getPath(self) -> str:
+		"""
+
+		:return:
+		"""
+		return self.__filePath

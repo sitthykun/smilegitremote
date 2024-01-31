@@ -54,6 +54,17 @@ def pullProjectHelp() -> Any:
     return Help().pull()
 
 
+@app.route('/token/help', methods= ['GET'])
+def tokenProjectHelp() -> Any:
+    #
+    return Help().tokenRequest()
+
+@app.route('/token/', methods= ['POST'])
+def tokenProjectPost() -> Any:
+    #
+    return Action(log).tokenPost() if Validation(log).tokenPost() else Validation(log).fail(message= 'token project post')
+
+
 # run server
 if __name__ == '__main__':
     #

@@ -49,7 +49,7 @@ class Trigger:
 			#
 			self.error.setFalse()
 
-			#
+			# os.path.join('', self.__dirExec, filename)
 			filename    = f'{self.__dirExec}/{filename}'
 			# subprocess.run(command, shell= True, executable= self.__bashExec)
 			result      = subprocess.check_output(

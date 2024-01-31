@@ -43,7 +43,7 @@ class Help:
 			, url   = 'checkout/<projectId>'
 			, body  = {
 				f'{EParam.Checkout.USERNAME}{EParam._REQUIRE}': 'xxx'
-				, f'{EParam.Checkout.PASSWORD}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Checkout.TOKEN}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Checkout.BRANCH_NAME}{EParam._REQUIRE}': 'xxx'
 			}
 		)
@@ -60,10 +60,26 @@ class Help:
 			, url   = 'pull/<projectId>'
 			, body  = {
 				f'{EParam.Pull.USERNAME}{EParam._REQUIRE}': 'xxx'
-				, f'{EParam.Pull.PASSWORD}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Pull.TOKEN}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Pull.TRIGGER}{EParam._OPTIONAL}': {
 					f'{EParam.PullTrigger.BEFORE}{EParam._OPTIONAL}': 'xxx xxx xxx'
 					, f'{EParam.PullTrigger.AFTER}{EParam._OPTIONAL}': 'xxx xxx xxx'
 				}
+			}
+		)
+
+	@staticmethod
+	def tokenRequest() -> dict:
+		"""
+
+		:return:
+		"""
+		return Help().__help(
+			title   = 'token'
+			, method= 'post'
+			, url   = 'token'
+			, body  = {
+				f'{EParam.Token.USERNAME}{EParam._REQUIRE}': 'xxx'
+				, f'{EParam.Token.PASSWORD}{EParam._REQUIRE}': 'xxx'
 			}
 		)

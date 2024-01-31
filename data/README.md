@@ -35,3 +35,6 @@ Just use standard file instead using any database application
   - enable
 - require:
   - none
+
+# token directory
+- Storage token in a file that named by an username

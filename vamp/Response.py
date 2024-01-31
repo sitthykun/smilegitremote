@@ -41,13 +41,17 @@ class Response:
 		:param code:
 		:return:
 		"""
-		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
+		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"token\" : \"\"}" "http://127.0.0.1:6060/pull/123"
+		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"jojo\", \"token\" : \"eThjojjxY3Y5b2lETWxkZlVIM2VCTVlWaE1Ta0JDS3VmSllCbURJZ0FweE4wUFNtTkNqWG1Wam0ycDB4a2FhSlNHOTcyaE81cmFJOTY2NWFzZ0JtS2xZQnV5MloyOTZK\"}" "http://127.0.0.1:6060/pull/123"
+		#  curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"jojo\", \"password\" : \"kara\"}" "http://127.0.0.1:6060/token/"
 		# append datetime
 		data.update({'datetime': self.__getDateTime()})
+
 		#
 		r   = jsonify({'status': status, 'data': data})
 		r.status_code = code
-		#
+
+		# return last
 		return r
 
 	def fail(self, errorMessage: str, errorNum: int, status: str= 'fail', hsc: int = 400) -> dict:
@@ -67,6 +71,20 @@ class Response:
 					, 'message' : errorMessage
 				}
 			}
+			, code  = hsc
+		)
+
+	def plain(self, value: dict, status: str= 'success', hsc: int= 200) -> dict:
+		"""
+
+		:param value:
+		:param status:
+		:param hsc:
+		:return:
+		"""
+		return self.__respond(
+			status  = status
+			, data  = value
 			, code  = hsc
 		)
 

@@ -5,6 +5,9 @@ Package: project
 Note:
 Version: 1.0.1
 """
+# built-in
+from __future__ import annotations
+import os
 # external
 from smileerror.ErrorBase import ErrorBase
 from smilelog.Logger import Logger
@@ -90,7 +93,7 @@ class Project:
 		self.trigger        = self.Trigger(self.__data.get(Project.Constant.TRIGGER))
 		self.whiteIP        = self.__data.get(Project.Constant.WHITE_IP)
 
-	def __getAuth(self, auth: dict) -> Auth:
+	def __getAuth(self, auth: list) -> Auth:
 		"""
 
 		:param auth:
@@ -107,7 +110,15 @@ class Project:
 		# append username and token
 		return str(data.get(Project.Constant.GIT_REMOTE_URL)).replace('//', f'//{data.get(Project.Constant.GIT_USERNAME)}:{data.get(Project.Constant.GIT_TOKEN)}@')
 
-	def getAll(self) -> dict:
+	def get(self, data: dict) -> Project:
+		"""
+
+		:param data:
+		:return:
+		"""
+		return Project(data= data)
+
+	def getDict(self) -> dict:
 		"""
 
 		:return:

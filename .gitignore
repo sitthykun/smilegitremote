@@ -37,3 +37,7 @@ log/*.log
 data
 data/
 data/*
+
+# test file
+test.py
+

@@ -36,12 +36,12 @@ class Data:
 		self.__project  = project
 		self.__role     = role
 
-	def getAuth(self) -> list:
+	def getAuths(self) -> Auth | None:
 		"""
 
 		:return:
 		"""
-		return self.__auth
+		return Auth(self.__auth)
 
 	def getAuthById(self, id: int) -> Auth:
 		"""
