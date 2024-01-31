@@ -38,10 +38,10 @@ Find data/project.json
 	"123": {
 	  "auth": [
 		{
-		  , "username": "kara"
+		  "username": "kara"
 		}
 		, {
-		  , "username": "jojo"
+		  "username": "jojo"
 		}
 	  ]
 	  , "env": "pro"
@@ -64,7 +64,7 @@ Find data/project.json
 	, "345": {
 	}
   }
-  , "version": "1.0.0"
+  , "version": "1.0.1"
 }
 ```
 Above the project.json has only a valid project is '123'
@@ -110,6 +110,43 @@ Start a terminal with CURL command
 ```
 $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/pull/123"
 ```
+
+## In main.py file now
+There are many route sample such as
+- Request token
+- Checkout
+- Pull
+
+Before request the git command, these commands need a token to access
+```
+@app.route('/token/', methods= ['POST'])
+def tokenProjectPost() -> Any:
+    return Action(log).tokenPost() if Validation(log).tokenPost() else Validation(log).fail(message= 'token project post')
+```
+
+## API Document
+To get the requirement of each api, please follow the format '/token/help' for a new route.
+Let checkout the exist in the main.py
+```
+@app.route('/token/help', methods= ['GET'])
+def tokenProjectHelp() -> Any:
+    #
+    return Help().tokenRequest()
+```
+The right output should be like this
+```
+{
+  "token_document": {
+    "body": {
+      "password*": "xxx",
+      "username*": "xxx"
+    },
+    "method": "post",
+    "url": "https://domain/token"
+  }
+}
+```
+
 
 ## Server Deployment
 ### GUnicorn
