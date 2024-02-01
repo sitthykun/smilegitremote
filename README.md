@@ -1,5 +1,7 @@
 # Smile Git Remote
-Use a web service (microservice) to remote git's command
+Use a web service (microservice) to remote git's command. 
+To avoid various external software installations such as Redis, RDMS, NoSQL, all the permanent and temporary data is using a file for storage.
+Additionally, among of those files are json and plain text.
 
 ## Version 0.2.0
 The trigger is implemented with two events are the before and after.
@@ -68,6 +70,7 @@ Find data/project.json
 }
 ```
 Above the project.json has only a valid project is '123'
+Currently, the token data is stored in 'token' folder.
 
 ## Create a post route:
 Check out main.py in alongside root directory
@@ -112,7 +115,7 @@ $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\",
 ```
 
 ## In main.py file now
-There are many route sample such as
+There are a couple route samples such as
 - Request token
 - Checkout
 - Pull
@@ -126,7 +129,7 @@ def tokenProjectPost() -> Any:
 
 ## API Document
 To get the requirement of each api, please follow the format '/token/help' for a new route.
-Let checkout the exist in the main.py
+Let checkout exist in the main.py
 ```
 @app.route('/token/help', methods= ['GET'])
 def tokenProjectHelp() -> Any:
@@ -174,7 +177,7 @@ or add directly these lines before importing git namespace inside the code
 ```
 # built-in
 import os
-# set
+# set these lines to prevent any error happen on linux
 os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
 os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 ...
