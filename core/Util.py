@@ -56,9 +56,9 @@ class Util:
 		:return:
 		"""
 		length1 = len(value1)
-		length2 = len(value2)
+		#length2 = len(value2)
 		rndTime = random.randint(0, length1 - 1)
-		value3  = f'{value2[:rndTime]}{Util.randomStr(time= len(value1), value= value1)}{value2[rndTime:]}'
+		value3  = f'{value2[:rndTime]}{Util.randomStr(time= length1, value= value1)}{value2[rndTime:]}'
 
 		#
 		return value3[:Util.RANDOM_TIME]
