@@ -1,3 +1,4 @@
+![template-sgr](https://github.com/sitthykun/smilevalidation/assets/227092/dfbbdff9-dae7-4d50-b354-8c741703060f)
 # Smile Git Remote
 Use a web service (microservice) to remote git's command. 
 To avoid various external software installations such as Redis, RDMS, NoSQL, all the permanent and temporary data is using a file for storage.
