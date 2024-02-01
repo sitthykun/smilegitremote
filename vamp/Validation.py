@@ -96,4 +96,3 @@ class Validation:
 		except Exception as e:
 			self.log.error(title= 'vamp.Validation.tokenPost Exception', content= f'{str(e)}')
 			return False
-

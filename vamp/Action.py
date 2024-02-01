@@ -5,9 +5,7 @@ Package: project
 Note:
 Version: 1.0.1
 """
-import datetime
 # built-in
-import json
 from typing import Any
 # external
 from flask import request

@@ -177,6 +177,7 @@ class Auth:
 	def get(self, data: list) -> Auth:
 		"""
 
+		:param data:
 		:return:
 		"""
 		return Auth(data= data)

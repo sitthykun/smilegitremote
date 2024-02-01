@@ -34,13 +34,14 @@ class Model(ErrorBase):
 		super().__init__()
 
 		# private
+		self.__dataExt  = '.json'
 		self.__filePath = filePath
 
 		# public
 		self.data       = Data(
-			auth        = self.__readList(f'{self.__filePath}/{self.AUTH}.json')
-			, project   = self.__readDict(f'{self.__filePath}/{self.PROJECT}.json')
-			, role      = self.__readList(f'{self.__filePath}/{self.ROLE}.json')
+			auth        = self.__readList(f'{os.path.join(self.__filePath, (self.AUTH + self.__dataExt))}')
+			, project   = self.__readDict(f'{os.path.join(self.__filePath, (self.PROJECT + self.__dataExt))}')
+			, role      = self.__readList(f'{os.path.join(self.__filePath, (self.ROLE + self.__dataExt))}')
 		)
 		self.log        = log
 
