@@ -59,8 +59,8 @@ Find data/project.json
 	  , "name": "test website"
 	  , "note": "test project website"
 	  , "trigger": {
-		"before": [""]
-		, "after": [""]
+		"before": ["echo 'Start'"]
+		, "after": ["echo 'Finish'"]
 	  }
 	  , "white_ip": ["192.168.2.3","192.168.2.4"]
 	}
@@ -179,7 +179,7 @@ or add directly these lines before importing git namespace inside the code
 ```
 # built-in
 import os
-# set these lines to prevent any error happen on linux
+# # set these lines to prevent any error happen on linux
 os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
 os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 ...

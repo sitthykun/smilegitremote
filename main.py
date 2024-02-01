@@ -7,7 +7,7 @@ Version: 0.1.2
 """
 # built-in
 import os
-## set
+# # set these lines to prevent any error happen on linux
 os.environ['GIT_PYTHON_REFRESH']        = 'quiet'
 os.environ['GIT_PYTHON_GIT_EXECUTABLE'] = '/usr/bin/git'
 from typing import Any
@@ -31,7 +31,7 @@ log = Logger(
 @app.route('/', methods= ['GET'])
 def home() -> Any:
     #
-    return 'Miss Mom', 200
+    return 'Love Mom', 200
 
 @app.route('/checkout/<string:projectId>', methods= ['POST'])
 def checkoutProjectPost(projectId: str) -> Any:
