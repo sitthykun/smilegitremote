@@ -70,7 +70,8 @@ Find data/project.json
 }
 ```
 Above the project.json has only a valid project is '123'
-Currently, the token data is stored in 'token' folder.
+The previous commit, the token concept was implemented and stored in 'token' subdirectory of the 'data'.
+Furthermore, if github's repo is a private, the configuration required 'git_username' and 'git_token'.
 
 ## Create a post route:
 Check out main.py in alongside root directory
