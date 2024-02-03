@@ -7,7 +7,23 @@ Additionally, among of those files are json and plain text.
 ## Version 0.3.0
 On pull request, this function allows checkout any available branch instead of the default git_branch's setting value in project.json. And
 Implement a plug feature via reading file which stored in the plugin directory. The batch command inside the plugin file execution is lower priority than the trigger.
+```
+Pull > 
+// optional
+"plugin": {
+  // optional
+  "before": 'flask.init'
+  // optional
+  , "after": 'flask.clean'
+}
 
+Checkout >
+// optional
+"plugin": {
+  // optional
+  "after": 'flask.clean'
+}
+```
 
 ## Version 0.2.0
 The trigger is implemented with two events are the before and after.
