@@ -12,9 +12,9 @@ from flask import request
 from smilelog.Logger import Logger
 # internal
 from core.CGit import CGit
+from core.Plugin import Plugin
 from core.Trigger import Trigger
 import entity.Params as EParam
-# from entity.data.Project import Project
 from vamp.Model import Model
 from vamp.Response import Response
 
@@ -33,6 +33,7 @@ class Action:
 		self.__git              = CGit(log)
 		self.__isHeaderJson     = False
 		self.__model            = Model(filePath= 'data', log= log)
+		self.__plugin           = Plugin()
 		self.__res              = Response()
 		self.__trigger          = Trigger()
 		# public
@@ -73,6 +74,7 @@ class Action:
 					if self.__git.getBranchName() != project.gitBranch:
 						# checkout the branch
 						self.__git.checkout(branchName)
+						self.__plugAfter()
 
 						# found error
 						if self.__git.error.isTrue():
@@ -119,22 +121,6 @@ class Action:
 		project.auth.removeToken(username=username)
 		# fail
 		return self.__res.fail('No directory', 400)
-
-	def __doAfter(self, command: list) -> None:
-		"""
-
-		:param command:
-		:return:
-		"""
-		self.__trigger.doAfter(command)
-
-	def __doBefore(self, command: list) -> None:
-		"""
-
-		:param command:
-		:return:
-		"""
-		self.__trigger.doBefore(command)
 
 	def __generateToken(self, username: str, password: str) -> dict:
 		"""
@@ -192,12 +178,35 @@ class Action:
 			self.log.error(title= 'vamp.Action.__param Exception', content= f'{str(e)}')
 			return defaultValue
 
-	def __pull(self, projectId: str, username: str, token: str) -> dict:
+	def __plugBefore(self) -> None:
+		"""
+
+		:return:
+		"""
+		try:
+			self.__plugin.doBefore(self.__param(EParam.Pull.PLUGIN)[EParam.Events.BEFORE])
+
+		except Exception as e:
+			self.log.error(title= 'vamp.Action.__plugBefore Exception', content= f'{str(e)}')
+
+	def __plugAfter(self) -> None:
+		"""
+
+		:return:
+		"""
+		try:
+			self.__plugin.doAfter(self.__param(EParam.Pull.PLUGIN)[EParam.Events.AFTER])
+
+		except Exception as e:
+			self.log.error(title= 'vamp.Action.__plugAfter Exception', content= f'{str(e)}')
+
+	def __pull(self, projectId: str, username: str, token: str, branch: str= None) -> dict:
 		"""
 
 		:param projectId:
 		:param username:
 		:param token:
+		:param branch:
 		:return:
 		"""
 		# init
@@ -209,7 +218,8 @@ class Action:
 		# verify dir and compare auth
 		if project.gitDir != '' and project.auth.findUsernameToken(username= username, token= token):
 			# run before
-			self.__doBefore(project.trigger.before)
+			self.__trigBefore(project.trigger.before)
+			self.__plugBefore()
 
 			#
 			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
@@ -252,7 +262,12 @@ class Action:
 
 			# compare the branch to avoid broken something on next step after checkout branch or any source inside
 			# the current directory
-			if self.__git.getBranchName() != project.gitBranch:
+			# branch is a current request
+			# project.gitBranch is a default setting
+			branchName  = branch if branch else project.gitBranch
+
+			#
+			if self.__git.getBranchName() != branchName:
 				# checkout the branch
 				self.__git.checkout(branchName= project.gitBranch)
 
@@ -283,8 +298,10 @@ class Action:
 			commitId    = self.__git.getCommitHash()
 			self.log.warning(title= 'core.Action.pullGet 2', content= f'{commitId}')
 
+			# plug
+			self.__plugAfter()
 			# run after
-			self.__doAfter(project.trigger.after)
+			self.__trigAfter(project.trigger.after)
 
 			# remove token
 			project.auth.removeToken(username= username)
@@ -301,6 +318,22 @@ class Action:
 		project.auth.removeToken(username= username)
 		#
 		return self.__res.fail('Totally, cannot pull', 400)
+
+	def __trigAfter(self, command: list) -> None:
+		"""
+
+		:param command:
+		:return:
+		"""
+		self.__trigger.doAfter(command)
+
+	def __trigBefore(self, command: list) -> None:
+		"""
+
+		:param command:
+		:return:
+		"""
+		self.__trigger.doBefore(command)
 
 	def checkoutPost(self, projectId: str) -> Any:
 		"""
@@ -326,6 +359,7 @@ class Action:
 			projectId   = projectId
 			, username  = self.__param(EParam.Pull.USERNAME)
 			, token     = self.__param(EParam.Pull.TOKEN)
+			, branch    = self.__param(EParam.Pull.BRANCH)
 		)
 
 	def tokenPost(self) -> Any:

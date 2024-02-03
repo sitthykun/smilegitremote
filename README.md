@@ -4,6 +4,11 @@ Use a web service (microservice) to remote git's command.
 To avoid various external software installations such as Redis, RDMS, NoSQL, all the permanent and temporary data is using a file for storage.
 Additionally, among of those files are json and plain text.
 
+## Version 0.3.0
+On pull request, this function allows checkout any available branch instead of the default git_branch's setting value in project.json. And
+Implement a plug feature via reading file which stored in the plugin directory. The batch command inside the plugin file execution is lower priority than the trigger.
+
+
 ## Version 0.2.0
 The trigger is implemented with two events are the before and after.
 - before: contains a list of commands
@@ -197,11 +202,12 @@ $ which git
 
 ### Roadmap
 
-| Version | Status   | Description                                          |
-|---------|----------|------------------------------------------------------|
-| 0.1.0   | released | Clone, checkout a branch and pull function           |
-| 0.2.0   | current  | Enable trigger (before and after)                    |
-| 0.3.0   | dev      | Validating implementation for the request parameters |
+| Version | Status   | Description                                                                                                  |
+|---------|----------|--------------------------------------------------------------------------------------------------------------|
+| 0.1.0   | released | Clone, checkout a branch and pull function                                                                   |
+| 0.2.0   | current  | Enable trigger (before and after)                                                                            |
+| 0.3.0   | dev      | Allow pulling with any branch on the request and implement plugin which allows executing a batch of commands |
+| 0.4.0   | dev      | Validating implementation for the request parameters                                                         |
 
 
 Hopefully, you will enjoy on Linux and MacOS
