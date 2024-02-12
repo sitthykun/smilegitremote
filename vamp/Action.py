@@ -102,6 +102,8 @@ class Action:
 					else:
 						#
 						commitId = self.__git.getCommitHash()
+						# render plugin after
+						self.__plugAfter()
 						# remove token
 						project.auth.removeToken(username=username)
 
