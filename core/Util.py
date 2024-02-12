@@ -24,7 +24,7 @@ class Util:
 		:param value:
 		:return:
 		"""
-		return Util.covertBase64(
+		return Util.convertBase64(
 			value   = Util.randomStr(
 				time    = time
 				, value = value
@@ -32,7 +32,7 @@ class Util:
 		)
 
 	@staticmethod
-	def covertBase64(value: str) -> str:
+	def convertBase64(value: str) -> str:
 		"""
 
 		:param value:
