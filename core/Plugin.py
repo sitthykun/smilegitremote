@@ -74,12 +74,15 @@ class Plugin:
 				if os.path.exists(filename) and os.path.isfile(filename):
 					#
 					with open(filename, 'r') as fo:
-						# read all lines
-						lines   = fo.readlines()
-
-						# loop to execute all commands as possible
-						for line in lines:
-							#
+						# # read all lines
+						# lines   = fo.readlines()
+						#
+						# # loop to execute all commands as possible
+						# for line in lines:
+						# 	#
+						# 	self.__doSys(command= line)
+						# loop
+						for line in fo:
 							self.__doSys(command= line)
 
 		except Exception as e:
