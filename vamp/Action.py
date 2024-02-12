@@ -74,7 +74,6 @@ class Action:
 					if self.__git.getBranchName() != project.gitBranch:
 						# checkout the branch
 						self.__git.checkout(branchName)
-						self.__plugAfter()
 
 						# found error
 						if self.__git.error.isTrue():
@@ -87,6 +86,8 @@ class Action:
 						else:
 							#
 							commitId = self.__git.getCommitHash()
+							# render plugin after
+							self.__plugAfter()
 							# remove token
 							project.auth.removeToken(username= username)
 
@@ -217,10 +218,6 @@ class Action:
 
 		# verify dir and compare auth
 		if project.gitDir != '' and project.auth.findUsernameToken(username= username, token= token):
-			# run before
-			self.__trigBefore(project.trigger.before)
-			self.__plugBefore()
-
 			#
 			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# if no dir, it will automatically create a new one
@@ -239,6 +236,9 @@ class Action:
 				else:
 					commitId = self.__git.getCommitHash()
 					self.log.warning(title= 'core.Action.pullGet 1', content= f'{commitId}')
+					# run before
+					self.__trigBefore(project.trigger.before)
+					self.__plugBefore()
 
 			# found the repository
 			else:
@@ -257,6 +257,11 @@ class Action:
 					project.auth.removeToken(username= username)
 					#
 					return self.__res.fail(self.__git.error.getMessage(), 400)
+				#
+				else:
+					# run before
+					self.__trigBefore(project.trigger.before)
+					self.__plugBefore()
 
 			self.log.warning(title= 'core.Action.pullGet 3', content= f'directory branch: {self.__git.getBranchName()}, request branch: {project.gitBranch}')
 
