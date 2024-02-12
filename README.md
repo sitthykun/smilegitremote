@@ -221,8 +221,8 @@ $ which git
 | Version | Status   | Description                                                                                                  |
 |---------|----------|--------------------------------------------------------------------------------------------------------------|
 | 0.1.0   | released | Clone, checkout a branch and pull function                                                                   |
-| 0.2.0   | current  | Enable trigger (before and after)                                                                            |
-| 0.3.0   | dev      | Allow pulling with any branch on the request and implement plugin which allows executing a batch of commands |
+| 0.2.0   | released | Enable trigger (before and after)                                                                            |
+| 0.3.0   | current  | Allow pulling with any branch on the request and implement plugin which allows executing a batch of commands |
 | 0.4.0   | dev      | Validating implementation for the request parameters                                                         |
 
 
