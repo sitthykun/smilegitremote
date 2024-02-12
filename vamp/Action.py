@@ -236,9 +236,7 @@ class Action:
 				else:
 					commitId = self.__git.getCommitHash()
 					self.log.warning(title= 'core.Action.pullGet 1', content= f'{commitId}')
-					# run before
 					self.__trigBefore(project.trigger.before)
-					self.__plugBefore()
 
 			# found the repository
 			else:
@@ -257,13 +255,10 @@ class Action:
 					project.auth.removeToken(username= username)
 					#
 					return self.__res.fail(self.__git.error.getMessage(), 400)
-				#
-				else:
-					# run before
-					self.__trigBefore(project.trigger.before)
-					self.__plugBefore()
 
 			self.log.warning(title= 'core.Action.pullGet 3', content= f'directory branch: {self.__git.getBranchName()}, request branch: {project.gitBranch}')
+			# run
+			self.__trigBefore(project.trigger.before)
 
 			# compare the branch to avoid broken something on next step after checkout branch or any source inside
 			# the current directory
@@ -288,6 +283,8 @@ class Action:
 			# #
 			# if self.__git.error.isTrue():
 			# 	return self.__respond(self.__git.error.getMessage(), 400)
+			# run before
+			self.__plugBefore()
 
 			# get a new code
 			self.__git.pull(remoteOrigin= project.gitRemoteOrigin)
