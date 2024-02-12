@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.0
+Version: 1.0.1
 """
 # built-in
 import os
