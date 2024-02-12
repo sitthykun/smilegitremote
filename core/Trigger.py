@@ -82,8 +82,10 @@ class Trigger:
 			#
 			self.error.setFalse()
 
-			# use c port via bash with -c option
-			os.system(f'{self.__bashExec} -c "{command}"')
+			#
+			if command:
+				# use c port via bash with -c option
+				os.system(f'{self.__bashExec} -c "{command}"')
 
 		except Exception as e:
 			self.error.setTrue(code= 502, message= str(e))
@@ -148,6 +150,6 @@ class Trigger:
 		:return:
 		"""
 		#
-		for c in command:
+		for cmd in command:
 			#
-			self.__doSys(c)
+			self.__doSys(command= cmd)
