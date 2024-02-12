@@ -1,1 +1,1 @@
-composer dump-autoload
+php composer.phar dump-autoload
