@@ -12,9 +12,9 @@ Pull >
 // optional
 "plugin": {
   // optional
-  "before": 'flask.init'
+  "before": "flask.init"
   // optional
-  , "after": 'flask.clean'
+  , "after": "flask.clean"
 }
 
 Checkout >

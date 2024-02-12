@@ -61,19 +61,26 @@ class Plugin:
 			#
 			self.error.setFalse()
 
-			#
-			filename = filename.replace('.', '/')
-			filename = os.path.join(
-				pluginPath
-				, f'{filename}{extension}'
-			)
-
-			#
-			if os.path.exists(filename) and os.path.isfile(filename):
+			# prevent empty string
+			if filename != '':
 				#
-				with open(filename, 'r') as fo:
+				filename = filename.replace('.', '/')
+				filename = os.path.join(
+					pluginPath
+					, f'{filename}{extension}'
+				)
+
+				#
+				if os.path.exists(filename) and os.path.isfile(filename):
 					#
-					self.__doSys(command= fo.readline())
+					with open(filename, 'r') as fo:
+						# read all lines
+						lines   = fo.readlines()
+
+						# loop to execute all commands as possible
+						for line in lines:
+							#
+							self.__doSys(command= line)
 
 		except Exception as e:
 			self.error.setTrue(code= 503, message= str(e))
