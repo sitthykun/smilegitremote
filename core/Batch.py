@@ -45,7 +45,7 @@ class Batch:
 		except Exception as e:
 			self.error.setTrue(code= 502, message= str(e))
 
-	def __readBatch(self, filename: str, extension: str= '.txt', pluginPath: str= 'plugin') -> None:
+	def __readBatch(self, filename: str, extension: str= '.txt', batchPath: str= 'batch') -> None:
 		"""
 		filename has no extension
 		ex:
@@ -53,7 +53,7 @@ class Batch:
 			plugin/flask/clean
 		:param filename:
 		:param extension:
-		:param pluginPath:
+		:param batchPath:
 		:return:
 		"""
 		#
@@ -66,7 +66,7 @@ class Batch:
 				#
 				filename = filename.replace('.', '/')
 				filename = os.path.join(
-					pluginPath
+					batchPath
 					, f'{filename}{extension}'
 				)
 
