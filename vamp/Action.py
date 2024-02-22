@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 # built-in
 from typing import Any
@@ -12,7 +12,7 @@ from flask import request
 from smilelog.Logger import Logger
 # internal
 from core.CGit import CGit
-from core.Plugin import Plugin
+from core.Batch import Batch
 from core.Trigger import Trigger
 import entity.Params as EParam
 from vamp.Model import Model
@@ -30,10 +30,10 @@ class Action:
 		"""
 		# private
 		# self.__dataProject      = Project()
+		self.__batch            = Batch()
 		self.__git              = CGit(log)
 		self.__isHeaderJson     = False
 		self.__model            = Model(filePath= 'data', log= log)
-		self.__plugin           = Plugin()
 		self.__res              = Response()
 		self.__trigger          = Trigger()
 		# public
@@ -86,8 +86,8 @@ class Action:
 						else:
 							#
 							commitId = self.__git.getCommitHash()
-							# render plugin after
-							self.__plugAfter()
+							# render batch after
+							self.__batchAfter()
 							# remove token
 							project.auth.removeToken(username= username)
 
@@ -102,8 +102,8 @@ class Action:
 					else:
 						#
 						commitId = self.__git.getCommitHash()
-						# render plugin after
-						self.__plugAfter()
+						# render batch after
+						self.__batchAfter()
 						# remove token
 						project.auth.removeToken(username=username)
 
@@ -181,27 +181,27 @@ class Action:
 			self.log.error(title= 'vamp.Action.__param Exception', content= f'{str(e)}')
 			return defaultValue
 
-	def __plugBefore(self) -> None:
+	def __batchBefore(self) -> None:
 		"""
 
 		:return:
 		"""
 		try:
-			self.__plugin.doBefore(self.__param(EParam.Pull.PLUGIN)[EParam.Events.BEFORE])
+			self.__batch.doBefore(self.__param(EParam.Pull.BATCH)[EParam.Events.BEFORE])
 
 		except Exception as e:
-			self.log.error(title= 'vamp.Action.__plugBefore Exception', content= f'{str(e)}')
+			self.log.error(title= 'vamp.Action.__batchBefore Exception', content= f'{str(e)}')
 
-	def __plugAfter(self) -> None:
+	def __batchAfter(self) -> None:
 		"""
 
 		:return:
 		"""
 		try:
-			self.__plugin.doAfter(self.__param(EParam.Pull.PLUGIN)[EParam.Events.AFTER])
+			self.__batch.doAfter(self.__param(EParam.Pull.BATCH)[EParam.Events.AFTER])
 
 		except Exception as e:
-			self.log.error(title= 'vamp.Action.__plugAfter Exception', content= f'{str(e)}')
+			self.log.error(title= 'vamp.Action.__batchAfter Exception', content= f'{str(e)}')
 
 	def __pull(self, projectId: str, username: str, token: str, branch: str= None) -> dict:
 		"""
@@ -286,7 +286,7 @@ class Action:
 			# if self.__git.error.isTrue():
 			# 	return self.__respond(self.__git.error.getMessage(), 400)
 			# run before
-			self.__plugBefore()
+			self.__batchBefore()
 
 			# get a new code
 			self.__git.pull(remoteOrigin= project.gitRemoteOrigin)
@@ -302,8 +302,8 @@ class Action:
 			commitId    = self.__git.getCommitHash()
 			self.log.warning(title= 'core.Action.pullGet 2', content= f'{commitId}')
 
-			# plug
-			self.__plugAfter()
+			# batch
+			self.__batchAfter()
 			# run after
 			self.__trigAfter(project.trigger.after)
 

@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 # built-in
 import os
@@ -11,7 +11,7 @@ import os
 from smileerror.ErrorBase import ErrorBase
 
 
-class Plugin:
+class Batch:
 	"""
 
 	"""

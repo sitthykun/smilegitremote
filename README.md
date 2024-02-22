@@ -6,11 +6,11 @@ Additionally, among of those files are json and plain text.
 
 ## Version 0.3.0
 On pull request, this function allows checkout any available branch instead of the default git_branch's setting value in project.json. And
-Implement a plug feature via reading file which stored in the plugin directory. The batch command inside the plugin file execution is lower priority than the trigger.
+Implement a plug feature via reading file which stored in the batch directory. The batch command inside the batch file execution is lower priority than the trigger.
 ```
 Pull > 
 // optional
-"plugin": {
+"batch": {
   // optional
   "before": "flask.init"
   // optional
@@ -19,7 +19,7 @@ Pull >
 
 Checkout >
 // optional
-"plugin": {
+"batch": {
   // optional
   "after": 'flask.clean'
 }
@@ -218,12 +218,12 @@ $ which git
 
 ### Roadmap
 
-| Version | Status   | Description                                                                                                  |
-|---------|----------|--------------------------------------------------------------------------------------------------------------|
-| 0.1.0   | released | Clone, checkout a branch and pull function                                                                   |
-| 0.2.0   | released | Enable trigger (before and after)                                                                            |
-| 0.3.0   | current  | Allow pulling with any branch on the request and implement plugin which allows executing a batch of commands |
-| 0.4.0   | dev      | Validating implementation for the request parameters                                                         |
+| Version | Status   | Description                                                                                                           |
+|---------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| 0.1.0   | released | Clone, checkout a branch and pull function                                                                            |
+| 0.2.0   | released | Enable trigger (before and after)                                                                                     |
+| 0.3.0   | current  | Allow pulling with any branch on the request and implement the batch files which allows executing a batch of commands |
+| 0.4.0   | dev      | Validating implementation for the request parameters                                                                  |
 
 
 Hopefully, you will enjoy on Linux and MacOS

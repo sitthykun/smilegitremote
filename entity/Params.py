@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 
 _OPTIONAL   = '[optional]'
@@ -32,8 +32,8 @@ class Pull:
 
 	"""
 	# admin
+	BATCH       = 'batch'
 	BRANCH      = 'branch'
-	PLUGIN      = 'plugin'
 	ROLE        = 'role'
 	TRIGGER     = 'trigger'
 	TOKEN       = 'token'
