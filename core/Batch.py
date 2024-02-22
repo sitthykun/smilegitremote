@@ -49,8 +49,8 @@ class Batch:
 		"""
 		filename has no extension
 		ex:
-			plugin/flask/init
-			plugin/flask/clean
+			batch/flask/init
+			batch/flask/clean
 		:param filename:
 		:param extension:
 		:param batchPath:
