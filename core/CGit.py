@@ -302,6 +302,18 @@ class CGit:
 			self.log.error(title= 'core.CGit.getCommitHash Exception', content= f'{str(e)}')
 			return ''
 
+	def isDirty(self) -> bool:
+		"""
+
+		:return:
+		"""
+		#
+		# if not self.__repo:
+		# 	self.__repo = Repo(self.__dir, search_parent_directories= True)
+
+		# Check if there are any local changes]
+		return self.__repo.is_dirty(untracked_files= True)
+
 	def pull(self, remoteOrigin: str= None) -> None:
 		"""
 
@@ -352,3 +364,57 @@ class CGit:
 		except Exception as e:
 			self.error.setTrue(code= 203, message= str(e))
 			self.log.error(title= 'core.CGit.setRepo Exception', content= f'{str(e)}')
+
+	def stashAdd(self) -> None:
+		"""
+
+		:return:
+		"""
+		try:
+			self.error.setFalse()
+			#
+			# self.__dir      = dir
+			# self.__repo     = Repo(self.__dir, search_parent_directories= True)
+			# stash
+			self.__repo.git.stash('save', 'Auto-stash before pull')
+			self.log.info(title= 'core.CGit.stashAdd 1', content= f'{self.__dir=}, {self.__remoteUrl=}')
+
+		except Exception as e:
+			self.error.setTrue(code= 207, message= str(e))
+			self.log.error(title= 'core.CGit.stashAdd Exception', content= f'{str(e)}')
+
+	def stashClear(self) -> None:
+		"""
+
+		:param dir:
+		:return:
+		"""
+		try:
+			self.error.setFalse()
+			#
+			# self.__dir      = dir
+			# self.__repo     = Repo(self.__dir, search_parent_directories= True)
+			# stash
+			# List all stashes
+			stashes         = self.__repo.git.stash('list')
+
+			#
+			if not stashes:
+				self.log.info(title= 'core.CGit.stashClear 1', content= f'no stash found')
+
+			else:
+				# Drop each stash
+				stashList   = stashes.split('\n')
+
+				#
+				for stash in stashList:
+					stashRef    = stash.split(':')[0]
+					self.log.info(title= 'core.CGit.stashClear 2', content= f'{stashRef=}')
+					#
+					self.__repo.git.stash('drop', stashRef)
+			#
+			self.log.info(title= 'core.CGit.stashClear 3', content= f'')
+
+		except Exception as e:
+			self.error.setTrue(code= 209, message= str(e))
+			self.log.error(title= 'core.CGit.stashClear Exception', content= f'{str(e)}')

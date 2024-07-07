@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.3
+Version: 1.0.4
 """
 # built-in
 from typing import Any
@@ -85,7 +85,7 @@ class Action:
 			#
 			if self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# instance first
-				self.log.info(title='Action.__checkout', content='git not exist > before setRepo')
+				self.log.info(title= 'Action.__checkout', content='git not exist > before setRepo')
 				self.__git.setRepo(project.gitDir, project.gitRemoteURL)
 				self.log.info(title= 'Action.__checkout', content= 'git not exist > after setRepo')
 
@@ -230,6 +230,7 @@ class Action:
 		"""
 		# init
 		commitId    = ''
+		foundDirty  = False
 		# find project
 		project     = self.__model.data.getProjectById(projectId)
 		project.auth.setRootPath(path= self.__model.getPath())
@@ -275,9 +276,10 @@ class Action:
 					return self.__res.fail(self.__git.error.getMessage(), 400)
 
 			self.log.warning(title= 'core.Action.pullGet 3', content= f'directory branch: {self.__git.getBranchName()}, request branch: {project.gitBranch}')
+			self.log.warning(title= 'core.Action.pullGet 4', content= f'before run __trigBefore')
 			# run
 			self.__trigBefore(project.trigger.before)
-
+			self.log.warning(title= 'core.Action.pullGet 4', content= f'after run __trigBefore')
 			# compare the branch to avoid broken something on next step after checkout branch or any source inside
 			# the current directory
 			# branch is a current request
@@ -304,8 +306,19 @@ class Action:
 			# run before
 			self.__batchBefore()
 
+			#
+			if self.__git.isDirty():
+				#
+				foundDirty  = True
+				# git stash add
+				self.__git.stashAdd()
+
 			# get a new code
 			self.__git.pull(remoteOrigin= project.gitRemoteOrigin)
+
+			# clear stash
+			if foundDirty:
+				self.__git.stashClear()
 
 			# found error
 			if self.__git.error.isTrue():
