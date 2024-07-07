@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.2
+Version: 1.0.3
 """
 # built-in
 from typing import Any
@@ -39,6 +39,32 @@ class Action:
 		# public
 		self.log                = log
 
+	def __batchBefore(self) -> None:
+		"""
+
+		:return:
+		"""
+		try:
+			# found command
+			if self.__param(EParam.Pull.BATCH) and self.__param(EParam.Pull.BATCH).get(EParam.Events.BEFORE):
+				self.__batch.doBefore(self.__param(EParam.Pull.BATCH)[EParam.Events.BEFORE])
+
+		except Exception as e:
+			self.log.error(title= 'vamp.Action.__batchBefore Exception', content= f'{str(e)}')
+
+	def __batchAfter(self) -> None:
+		"""
+
+		:return:
+		"""
+		try:
+			# found command
+			if self.__param(EParam.Pull.BATCH) and self.__param(EParam.Pull.BATCH).get(EParam.Events.AFTER):
+				self.__batch.doAfter(self.__param(EParam.Pull.BATCH)[EParam.Events.AFTER])
+
+		except Exception as e:
+			self.log.error(title= 'vamp.Action.__batchAfter Exception', content= f'{str(e)}')
+
 	def __checkout(self, projectId: str, branchName: str, username: str, token: str) -> dict:
 		"""
 
@@ -57,14 +83,17 @@ class Action:
 		# verify dir and compare auth
 		if project.gitDir != '' and project.auth.findUsernameToken(username= username, token= token):
 			#
-			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
+			if self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# instance first
+				self.log.info(title='Action.__checkout', content='git not exist > before setRepo')
 				self.__git.setRepo(project.gitDir, project.gitRemoteURL)
+				self.log.info(title= 'Action.__checkout', content= 'git not exist > after setRepo')
 
 				#
 				if self.__git.error.isTrue():
 					# remove token
 					project.auth.removeToken(username= username)
+					self.log.warning(title= 'Action.__checkout', content= 'git not exist after setRepo is found error')
 					#
 					return self.__res.fail(self.__git.error.getMessage(), 400)
 				#
@@ -72,11 +101,15 @@ class Action:
 					# compare the branch to avoid broken something on next step after checkout branch or any source inside
 					# the current directory
 					if self.__git.getBranchName() != project.gitBranch:
+						self.log.warning(title= 'Action.__checkout', content= 'not a default')
 						# checkout the branch
+						self.log.warning(title='Action.__checkout', content= 'before checkout')
 						self.__git.checkout(branchName)
+						self.log.warning(title= 'Action.__checkout', content= 'after checkout')
 
 						# found error
 						if self.__git.error.isTrue():
+							self.log.warning(title= 'Action.__checkout', content= 'found error after checkout command and then remove token')
 							# remove token
 							project.auth.removeToken(username= username)
 							#
@@ -84,8 +117,10 @@ class Action:
 
 						#
 						else:
+							self.log.success(title= 'Action.__checkout', content= 'checkout success')
 							#
 							commitId = self.__git.getCommitHash()
+							self.log.info(title= 'Action.__checkout', content= f'{commitId=}')
 							# render batch after
 							self.__batchAfter()
 							# remove token
@@ -98,8 +133,9 @@ class Action:
 								, branchName    = branchName
 								, commitId      = commitId
 							)
-					#
+					# default branch
 					else:
+						self.log.success(title= 'Action.__checkout', content= 'checkout the default branch name')
 						#
 						commitId = self.__git.getCommitHash()
 						# render batch after
@@ -115,6 +151,8 @@ class Action:
 							, commitId      = commitId
 						)
 
+			# exits
+			self.log.info(title= 'Action.__checkout', content= 'git.exists')
 			# remove token
 			project.auth.removeToken(username= username)
 			# fail
@@ -180,28 +218,6 @@ class Action:
 		except Exception as e:
 			self.log.error(title= 'vamp.Action.__param Exception', content= f'{str(e)}')
 			return defaultValue
-
-	def __batchBefore(self) -> None:
-		"""
-
-		:return:
-		"""
-		try:
-			self.__batch.doBefore(self.__param(EParam.Pull.BATCH)[EParam.Events.BEFORE])
-
-		except Exception as e:
-			self.log.error(title= 'vamp.Action.__batchBefore Exception', content= f'{str(e)}')
-
-	def __batchAfter(self) -> None:
-		"""
-
-		:return:
-		"""
-		try:
-			self.__batch.doAfter(self.__param(EParam.Pull.BATCH)[EParam.Events.AFTER])
-
-		except Exception as e:
-			self.log.error(title= 'vamp.Action.__batchAfter Exception', content= f'{str(e)}')
 
 	def __pull(self, projectId: str, username: str, token: str, branch: str= None) -> dict:
 		"""

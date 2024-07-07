@@ -1,4 +1,4 @@
-flask==3.0.1
+flask==3.0.3
 gitpython==3.1.41
 gunicorn==21.2.0
 SmileError==1.0.1

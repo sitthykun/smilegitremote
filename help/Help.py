@@ -45,7 +45,7 @@ class Help:
 				f'{EParam.Checkout.USERNAME}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Checkout.TOKEN}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Checkout.BRANCH_NAME}{EParam._REQUIRE}': 'xxx'
-				, f'{EParam.Pull.PLUGIN}{EParam._OPTIONAL}': {
+				, f'{EParam.Pull.BATCH}{EParam._OPTIONAL}': {
 					f'{EParam.Events.AFTER}{EParam._OPTIONAL}': 'xxx.xxx'
 				}
 			}
@@ -65,7 +65,7 @@ class Help:
 				f'{EParam.Pull.USERNAME}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Pull.TOKEN}{EParam._REQUIRE}': 'xxx'
 				, f'{EParam.Pull.BRANCH}{EParam._OPTIONAL}':'xxx'
-				, f'{EParam.Pull.PLUGIN}{EParam._OPTIONAL}': {
+				, f'{EParam.Pull.BATCH}{EParam._OPTIONAL}': {
 					f'{EParam.Events.BEFORE}{EParam._OPTIONAL}': 'xxx.xxx'
 					, f'{EParam.Events.AFTER}{EParam._OPTIONAL}': 'xxx.xxx'
 				}

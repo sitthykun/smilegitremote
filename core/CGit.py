@@ -223,12 +223,12 @@ class CGit:
 			#
 			if dir and len(dir) > minPathChars:
 				self.__repo = Repo(dir, search_parent_directories= True)
-				self.log.info(title= 'core.CGit.exist 2', content= f'{dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
+				self.log.info(title= 'core.CGit.exist 2', content= f'{dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}, lengthRemoteUrl={len(self.__repo.remote(remoteOrigin).url)}, minPatchChars: {minPathChars}')
 				# check length of path
 				return len(self.__repo.remote(remoteOrigin).url) > minPathChars
 			#
 			elif self.__dir and len(self.__dir) > minPathChars:
-				self.log.info(title= 'core.CGit.exist 3', content= f'{self.__dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}')
+				self.log.info(title= 'core.CGit.exist 3', content= f'{self.__dir=}, {self.__repo.working_tree_dir=}, {self.__repo.remote(remoteOrigin).url=}, {minPathChars=}')
 				# check length of path
 				return len(self.__repo.remote(remoteOrigin).url) > minPathChars
 
