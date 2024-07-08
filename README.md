@@ -25,6 +25,9 @@ Checkout >
 }
 ```
 
+### Note:
+The batch command given by http's body, and trigger command given by project.json.
+
 ## Version 0.2.0
 The trigger is implemented with two events are the before and after.
 - before: contains a list of commands
