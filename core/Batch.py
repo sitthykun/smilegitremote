@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.2
+Version: 1.0.3
 """
 # built-in
 import os
@@ -37,8 +37,8 @@ class Batch:
 			#
 			self.error.setFalse()
 
-			#
-			if command:
+			# double-check
+			if command and len(command) > 1:
 				# use c port via bash with -c option
 				os.system(f'{self.__bashExec} -c "{command}"')
 

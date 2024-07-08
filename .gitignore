@@ -37,7 +37,9 @@ log/*.log
 data
 data/
 data/*
+#data/auth.json
+#data/project.json
+#data/role.json
 
 # test file
 test.py
-

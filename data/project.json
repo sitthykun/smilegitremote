@@ -20,6 +20,10 @@
 	  , "git_username": ""
 	  , "name": "test website"
 	  , "note": "test project website"
+	  , "batch": {
+		"before": "flask.init"
+		, "after": "flask.clean"
+	  }
 	  , "trigger": {
 		"before": ["echo 'Start'"]
 		, "after": ["echo 'Finish'"]

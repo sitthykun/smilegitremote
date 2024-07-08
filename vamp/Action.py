@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.4
+Version: 1.0.5
 """
 # built-in
 from typing import Any
@@ -47,7 +47,10 @@ class Action:
 		try:
 			# found command
 			if self.__param(EParam.Pull.BATCH) and self.__param(EParam.Pull.BATCH).get(EParam.Events.BEFORE):
-				self.__batch.doBefore(self.__param(EParam.Pull.BATCH)[EParam.Events.BEFORE])
+				#
+				self.__batch.doBefore(
+					self.__param(EParam.Pull.BATCH).get(EParam.Events.BEFORE)
+				)
 
 		except Exception as e:
 			self.log.error(title= 'vamp.Action.__batchBefore Exception', content= f'{str(e)}')
@@ -60,7 +63,10 @@ class Action:
 		try:
 			# found command
 			if self.__param(EParam.Pull.BATCH) and self.__param(EParam.Pull.BATCH).get(EParam.Events.AFTER):
-				self.__batch.doAfter(self.__param(EParam.Pull.BATCH)[EParam.Events.AFTER])
+				#
+				self.__batch.doAfter(
+					self.__param(EParam.Pull.BATCH).get(EParam.Events.AFTER)
+				)
 
 		except Exception as e:
 			self.log.error(title= 'vamp.Action.__batchAfter Exception', content= f'{str(e)}')
@@ -95,7 +101,7 @@ class Action:
 					project.auth.removeToken(username= username)
 					self.log.warning(title= 'Action.__checkout', content= 'git not exist after setRepo is found error')
 					#
-					return self.__res.fail(self.__git.error.getMessage(), 400)
+					return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 				#
 				else:
 					# compare the branch to avoid broken something on next step after checkout branch or any source inside
@@ -113,7 +119,7 @@ class Action:
 							# remove token
 							project.auth.removeToken(username= username)
 							#
-							return self.__res.fail(self.__git.error.getMessage(), 400)
+							return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
 						#
 						else:
@@ -156,12 +162,12 @@ class Action:
 			# remove token
 			project.auth.removeToken(username= username)
 			# fail
-			return self.__res.fail('Not found git directory', 400)
+			return self.__res.fail(errorMessage= 'Not found git directory', errorNum= 400)
 
 		# remove token
 		project.auth.removeToken(username=username)
 		# fail
-		return self.__res.fail('No directory', 400)
+		return self.__res.fail(errorMessage= 'No directory', errorNum= 400)
 
 	def __generateToken(self, username: str, password: str) -> dict:
 		"""
@@ -188,7 +194,7 @@ class Action:
 			})
 
 		# fail
-		return self.__res.fail('No authentication', 400)
+		return self.__res.fail(errorMessage= 'No authentication', errorNum= 400)
 
 	def __param(self, key: str, defaultValue: Any= None) -> Any | None:
 		"""
@@ -250,7 +256,7 @@ class Action:
 					# remove token
 					project.auth.removeToken(username= username)
 					#
-					return self.__res.fail(self.__git.error.getMessage(), 400)
+					return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
 				else:
 					commitId = self.__git.getCommitHash()
@@ -296,7 +302,7 @@ class Action:
 					# remove token
 					project.auth.removeToken(username= username)
 					#
-					return self.__res.fail(self.__git.error.getMessage(), 400)
+					return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
 			# # fetch the remote
 			# self.__git.fetch()
@@ -325,7 +331,7 @@ class Action:
 				# remove token
 				project.auth.removeToken(username= username)
 				#
-				return self.__res.fail(self.__git.error.getMessage(), 400)
+				return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
 			# the latest step
 			commitId    = self.__git.getCommitHash()
@@ -350,7 +356,7 @@ class Action:
 		# remove token
 		project.auth.removeToken(username= username)
 		#
-		return self.__res.fail('Totally, cannot pull', 400)
+		return self.__res.fail(errorMessage= 'Totally, it cannot pull', errorNum= 400)
 
 	def __trigAfter(self, command: list) -> None:
 		"""
