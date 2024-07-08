@@ -69,10 +69,6 @@ class Help:
 					f'{EParam.Events.BEFORE}{EParam._OPTIONAL}': 'xxx.xxx'
 					, f'{EParam.Events.AFTER}{EParam._OPTIONAL}': 'xxx.xxx'
 				}
-				, f'{EParam.Pull.TRIGGER}{EParam._OPTIONAL}': {
-					f'{EParam.Events.BEFORE}{EParam._OPTIONAL}': 'xxx xxx xxx'
-					, f'{EParam.Events.AFTER}{EParam._OPTIONAL}': 'xxx xxx xxx'
-				}
 			}
 		)
 
