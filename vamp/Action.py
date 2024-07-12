@@ -83,11 +83,11 @@ class Action:
 		# init
 		commitId    = ''
 		# find project
-		project     = self.__model.data.getProjectById(projectId)
+		project     = self.__model.data.getProjectByProjectId(projectId)
 		project.auth.setRootPath(path= self.__model.getPath())
 
 		# verify dir and compare auth
-		if project.gitDir != '' and project.auth.findUsernameToken(username= username, token= token):
+		if project.gitDir != '' and project.auth.findUsernameToken(username= username, project= projectId, token= token):
 			#
 			if self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# instance first
@@ -147,7 +147,7 @@ class Action:
 						# render batch after
 						self.__batchAfter()
 						# remove token
-						project.auth.removeToken(username=username)
+						project.auth.removeToken(username= username, project= projectId)
 
 						#
 						return self.__res.success(
@@ -160,36 +160,38 @@ class Action:
 			# exits
 			self.log.info(title= 'Action.__checkout', content= 'git.exists')
 			# remove token
-			project.auth.removeToken(username= username)
+			project.auth.removeToken(username= username, project= projectId)
 			# fail
 			return self.__res.fail(errorMessage= 'Not found git directory', errorNum= 400)
 
 		# remove token
-		project.auth.removeToken(username=username)
+		project.auth.removeToken(username= username, project= projectId)
 		# fail
 		return self.__res.fail(errorMessage= 'No directory', errorNum= 400)
 
-	def __generateToken(self, username: str, password: str) -> dict:
+	def __generateToken(self, username: str, password: str, project: str) -> dict:
 		"""
 
 		:param username:
 		:param password:
+		:param project:
 		:return:
 		"""
 		#
 		auth    = self.__model.data.getAuths()
 		auth.setRootPath(path= self.__model.getPath())
-		self.log.info(title= 'vamp.Action.__generateToken 1', content= f'{username=}, {password=}')
+		self.log.info(title= 'vamp.Action.__generateToken 1', content= f'{username=}, {password=}, {project=}')
 
 		#
-		if auth.findUsernamePassword(username= username, password= password):
-			self.log.warning(title= 'vamp.Action.__generateToken 2', content= f'{username=}, {password=}')
+		if auth.findUsernamePassword(username= username, password= password, project= project):
+			self.log.warning(title= 'vamp.Action.__generateToken 2', content= f'{username=}, {password=}, {project=}')
 
 			#
 			return self.__res.plain({
 				'token': auth.generateToken(
 					username    = username
 					, password  = password
+					, project   = project
 				)
 			})
 
@@ -238,11 +240,11 @@ class Action:
 		commitId    = ''
 		foundDirty  = False
 		# find project
-		project     = self.__model.data.getProjectById(projectId)
+		project     = self.__model.data.getProjectByProjectId(projectId)
 		project.auth.setRootPath(path= self.__model.getPath())
 
 		# verify dir and compare auth
-		if project.gitDir != '' and project.auth.findUsernameToken(username= username, token= token):
+		if project.gitDir != '' and project.auth.findUsernameToken(username= username, project= projectId, token= token):
 			#
 			if not self.__git.exist(project.gitDir, project.gitRemoteOrigin):
 				# if no dir, it will automatically create a new one
@@ -300,7 +302,7 @@ class Action:
 				#
 				if self.__git.error.isTrue():
 					# remove token
-					project.auth.removeToken(username= username)
+					project.auth.removeToken(username= username, project= projectId)
 					#
 					return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
@@ -329,7 +331,7 @@ class Action:
 			# found error
 			if self.__git.error.isTrue():
 				# remove token
-				project.auth.removeToken(username= username)
+				project.auth.removeToken(username= username, project= projectId)
 				#
 				return self.__res.fail(errorMessage= self.__git.error.getMessage(), errorNum= 400)
 
@@ -343,7 +345,7 @@ class Action:
 			self.__trigAfter(project.trigger.after)
 
 			# remove token
-			project.auth.removeToken(username= username)
+			project.auth.removeToken(username= username, project= projectId)
 
 			#
 			return self.__res.success(
@@ -354,7 +356,7 @@ class Action:
 			)
 
 		# remove token
-		project.auth.removeToken(username= username)
+		project.auth.removeToken(username= username, project= projectId)
 		#
 		return self.__res.fail(errorMessage= 'Totally, it cannot pull', errorNum= 400)
 
@@ -374,39 +376,41 @@ class Action:
 		"""
 		self.__trigger.doBefore(command)
 
-	def checkoutPost(self, projectId: str) -> Any:
+	def checkoutPost(self, project: str) -> Any:
 		"""
 
-		:param projectId:
+		:param project:
 		:return:
 		"""
 		return self.__checkout(
-			projectId   = projectId
+			projectId   = project
 			, username  = self.__param(EParam.Checkout.USERNAME)
 			, token     = self.__param(EParam.Checkout.TOKEN)
 			, branchName= self.__param(EParam.Checkout.BRANCH_NAME)
 		)
 
-	def pullPost(self, projectId: str) -> Any:
+	def pullPost(self, project: str) -> Any:
 		"""
 
-		:param projectId:
+		:param project:
 		:return:
 		"""
 		#
 		return self.__pull(
-			projectId   = projectId
+			projectId   = project
 			, username  = self.__param(EParam.Pull.USERNAME)
 			, token     = self.__param(EParam.Pull.TOKEN)
 			, branch    = self.__param(EParam.Pull.BRANCH)
 		)
 
-	def tokenPost(self) -> Any:
+	def tokenPost(self, project: str) -> Any:
 		"""
 
+		:param project:
 		:return:
 		"""
 		return self.__generateToken(
-			username    = self.__param(EParam.Token.USERNAME)
+			project     = project
+			, username  = self.__param(EParam.Token.USERNAME)
 			, password  = self.__param(EParam.Token.PASSWORD)
 		)

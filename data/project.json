@@ -1,15 +1,7 @@
 {
   "projects": {
 	"123": {
-	  "auth": [
-		{
-		  "username": "kara"
-		}
-		, {
-		  "username": "jojo"
-		}
-	  ]
-	  , "env": "pro"
+	  "env": "pro"
 	  , "force_clone": "true"
 	  , "force_pull": "true"
 	  , "git_branch": "master"

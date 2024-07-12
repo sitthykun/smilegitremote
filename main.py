@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 0.1.2
+Version: 0.1.3
 """
 # built-in
 import os
@@ -27,6 +27,24 @@ log = Logger(
     , enableLog = True
 )
 
+## error ###########################
+@app.errorhandler(403)
+def page_forbidden(e) -> Any:
+    """
+
+	:return:
+	"""
+    return 'Page forbidden', 403
+
+
+@app.errorhandler(404)
+def page_not_found(e) -> Any:
+    """
+
+	:return:
+	"""
+    return 'Page not found', 404
+
 
 @app.route('/', methods= ['GET'])
 def home() -> Any:
@@ -36,7 +54,7 @@ def home() -> Any:
 @app.route('/checkout/<string:projectId>', methods= ['POST'])
 def checkoutProjectPost(projectId: str) -> Any:
     #
-    return Action(log).checkoutPost(projectId= projectId) if Validation(log).checkoutPost() else Validation(log).fail(message= 'checkout project post')
+    return Action(log).checkoutPost(project= projectId) if Validation(log).checkoutPost(projectId) else Validation(log).fail(message= 'checkout project post')
 
 @app.route('/checkout/help', methods= ['GET'])
 def checkoutProjectHelp() -> Any:
@@ -46,7 +64,7 @@ def checkoutProjectHelp() -> Any:
 @app.route('/pull/<string:projectId>', methods= ['POST'])
 def pullProjectPost(projectId: str) -> Any:
     #
-    return Action(log).pullPost(projectId= projectId) if Validation(log).pullPost() else Validation(log).fail(message= 'pull project post')
+    return Action(log).pullPost(project= projectId) if Validation(log).pullPost(projectId) else Validation(log).fail(message= 'pull project post')
 
 @app.route('/pull/help', methods= ['GET'])
 def pullProjectHelp() -> Any:
@@ -59,10 +77,10 @@ def tokenProjectHelp() -> Any:
     #
     return Help().tokenRequest()
 
-@app.route('/token/', methods= ['POST'])
-def tokenProjectPost() -> Any:
+@app.route('/token/<string:projectId>', methods= ['POST'])
+def tokenProjectPost(projectId: str) -> Any:
     #
-    return Action(log).tokenPost() if Validation(log).tokenPost() else Validation(log).fail(message= 'token project post')
+    return Action(log).tokenPost(project= projectId) if Validation(log).tokenPost(projectId) else Validation(log).fail(message= 'token project post')
 
 
 # run server

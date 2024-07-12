@@ -65,19 +65,21 @@ class Project:
 				if data.get(self.AFTER):
 					self.after  = data.get(self.AFTER)
 
-	def __init__(self, data: dict):
+	def __init__(self, data: dict, project: str, auth: list):
 		"""
 
 		:param data:
+		:param project:
+		:param auth:
 		"""
 		# private
 		# # 1234567
-		self.__id           = ''
+		self.__id           = project
 		# # load all data
 		self.__data         = data
 
 		# public
-		self.auth           = self.__getAuth(self.__data.get(Project.Constant.AUTH))
+		self.auth           = self.__getAuthByProjectId(auth= auth, project= self.__id)
 		self.env            = self.__data.get(Project.Constant.ENV)
 		self.forceClone     = self.__data.get(Project.Constant.FORCE_CLONE)         or  'false'
 		self.forcePull      = self.__data.get(Project.Constant.FORCE_PULL)          or  'false'
@@ -92,14 +94,26 @@ class Project:
 		self.note           = self.__data.get(Project.Constant.NOTE)
 		self.trigger        = self.Trigger(self.__data.get(Project.Constant.TRIGGER))
 		self.whiteIP        = self.__data.get(Project.Constant.WHITE_IP)
+		# append project
+		self.project        = self.__id
 
-	def __getAuth(self, auth: list) -> Auth:
+	def __getAuth(self, auth: list, project: str) -> Auth:
 		"""
 
 		:param auth:
+		:param project:
 		:return:
 		"""
 		return Auth(auth)
+
+	def __getAuthByProjectId(self, auth: list, project: str) -> Auth:
+		"""
+
+		:param auth:
+		:param project:
+		:return:
+		"""
+		return Auth([element for element in auth if element[Auth.Constant.PROJECT] == project])
 
 	def __getRemotePrivateURL(self, data: dict) -> str:
 		"""
@@ -110,13 +124,14 @@ class Project:
 		# append username and token
 		return str(data.get(Project.Constant.GIT_REMOTE_URL)).replace('//', f'//{data.get(Project.Constant.GIT_USERNAME)}:{data.get(Project.Constant.GIT_TOKEN)}@')
 
-	def get(self, data: dict) -> Project:
+	def get(self, data: dict, project: str) -> Project:
 		"""
 
 		:param data:
+		:param project:
 		:return:
 		"""
-		return Project(data= data)
+		return Project(data= data, project= project)
 
 	def getDict(self) -> dict:
 		"""

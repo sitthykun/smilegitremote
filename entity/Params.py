@@ -15,6 +15,7 @@ class Checkout:
 
 	"""
 	BRANCH_NAME = 'branch'
+	PROJECT     = 'project'
 	TOKEN       = 'token'
 	USERNAME    = 'username'
 
@@ -34,6 +35,7 @@ class Pull:
 	# admin
 	BATCH       = 'batch'
 	BRANCH      = 'branch'
+	PROJECT     = 'project'
 	ROLE        = 'role'
 	TRIGGER     = 'trigger'
 	TOKEN       = 'token'
@@ -41,5 +43,6 @@ class Pull:
 
 
 class Token:
+	PROJECT     = 'project'
 	PASSWORD    = 'password'
 	USERNAME    = 'username'

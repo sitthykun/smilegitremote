@@ -36,6 +36,16 @@ class Data:
 		self.__project  = project
 		self.__role     = role
 
+	def getAuthsByProjectId(self, projectId: str) -> list:
+		"""
+
+		:param projectId:
+		:return:
+		"""
+		#
+		# return next((sub for sub in self.__auth if sub[Auth.Constant.PROJECT] == projectId), None)
+		return [element for element in self.__auth if element[Auth.Constant.PROJECT] == projectId]
+
 	def getAuths(self) -> Auth | None:
 		"""
 
@@ -51,15 +61,18 @@ class Data:
 		"""
 		return self.__auth[id] if self.__auth[id] else None
 
-	def getProjectById(self, id: str) -> Project | None:
+	def getProjectByProjectId(self, id: str) -> Project | None:
 		"""
 
 		:param id:
 		:return:
 		"""
+		#
 		if self.__project.get(self.Constant.PROJECTS).get(id):
 			return Project(
-				data    = self.__project.get(self.Constant.PROJECTS).get(id)
+				data        = self.__project.get(self.Constant.PROJECTS).get(id)
+				, project   = id
+				, auth      = self.__auth
 			)
 
 		#
@@ -77,7 +90,9 @@ class Data:
 		for project in self.__project.get(self.Constant.PROJECTS):
 			temp.append(
 				Project(
-					data    = self.__project.get(self.Constant.PROJECTS).get(project)
+					data        = self.__project.get(self.Constant.PROJECTS).get(project)
+					, project   = project
+					, auth      = self.__auth
 				)
 			)
 		#

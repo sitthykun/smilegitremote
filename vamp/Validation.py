@@ -49,13 +49,43 @@ class Validation:
 		# found
 		return found
 
-	def checkoutPost(self) -> bool:
+	def __validParam(self, key: str) -> bool:
 		"""
 
+		:param key:
 		:return:
 		"""
 		try:
-			return True
+			# json
+			if request.get_json().get(key):
+				return bool(request.get_json().get(key))
+
+			# form
+			elif request.args.get(key):
+				return bool(request.args.get(key))
+
+			elif request.values.get(key):
+				return bool(request.values.get(key))
+
+			elif request.form.get(key):
+				return bool(request.form.get(key))
+
+		except Exception as e:
+			self.log.error(title= 'vamp.Action.__param Exception', content= f'{str(e)}')
+		# default
+		return False
+
+	def checkoutPost(self, projectId: str) -> bool:
+		"""
+
+		:param projectId:
+		:return:
+		"""
+		#
+		isValid     = True if projectId and self.__validParam('token') and self.__validParam('username') else False
+		#
+		try:
+			return isValid
 
 		except Exception as e:
 			self.log.error(title= 'vamp.Validation.checkoutPost Exception', content= f'{str(e)}')
@@ -73,25 +103,33 @@ class Validation:
 			, errorNum  = 100
 		)
 
-	def pullPost(self) -> bool:
+	def pullPost(self, projectId: str) -> bool:
 		"""
 
+		:param projectId:
 		:return:
 		"""
+		#
+		isValid     = True if projectId and self.__validParam('token') and self.__validParam('username') else False
+		#
 		try:
-			return True
+			return isValid
 
 		except Exception as e:
 			self.log.error(title= 'vamp.Validation.pullPost Exception', content= f'{str(e)}')
 			return False
 
-	def tokenPost(self) -> bool:
+	def tokenPost(self, projectId: str) -> bool:
 		"""
 
+		:param projectId:
 		:return:
 		"""
+		#
+		isValid     = True if projectId and self.__validParam('password') and self.__validParam('username') else False
+		#
 		try:
-			return True
+			return isValid
 
 		except Exception as e:
 			self.log.error(title= 'vamp.Validation.tokenPost Exception', content= f'{str(e)}')

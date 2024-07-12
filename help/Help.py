@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.0
+Version: 1.1.0
 """
 # built-in
 from typing import Any
@@ -79,7 +79,7 @@ class Help:
 		:return:
 		"""
 		return Help().__help(
-			title   = 'token'
+			title   = 'token/<projectId>'
 			, method= 'post'
 			, url   = 'token'
 			, body  = {

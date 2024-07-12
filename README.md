@@ -4,6 +4,12 @@ Use a web service (microservice) to remote git's command.
 To avoid various external software installations such as Redis, RDMS, NoSQL, all the permanent and temporary data is using a file for storage.
 Additionally, among of those files are json and plain text.
 
+## Version 0.5.0
+Require project id of all requests
+
+## Version 0.4.0
+Validating implementation for the request required parameter
+
 ## Version 0.3.0
 On pull request, this function allows checkout any available branch instead of the default git_branch's setting value in project.json. And
 Implement a plug feature via reading file which stored in the batch directory. The batch command inside the batch file execution is lower priority than the trigger.
@@ -153,6 +159,19 @@ def tokenProjectPost() -> Any:
     return Action(log).tokenPost() if Validation(log).tokenPost() else Validation(log).fail(message= 'token project post')
 ```
 
+```
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/token"
+```
+
+```
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/checkout"
+```
+
+```
+$ curl -X POST -H "Content-type: application/json" -d "{\"token\" : \"kara\"}" "http://127.0.0.1:6060/pull"
+```
+
+
 ## API Document
 To get the requirement of each api, please follow the format '/token/help' for a new route.
 Let checkout exist in the main.py
@@ -225,8 +244,10 @@ $ which git
 |---------|----------|-----------------------------------------------------------------------------------------------------------------------|
 | 0.1.0   | released | Clone, checkout a branch and pull function                                                                            |
 | 0.2.0   | released | Enable trigger (before and after)                                                                                     |
-| 0.3.0   | current  | Allow pulling with any branch on the request and implement the batch files which allows executing a batch of commands |
-| 0.4.0   | dev      | Validating implementation for the request parameters                                                                  |
+| 0.3.0   | released | Allow pulling with any branch on the request and implement the batch files which allows executing a batch of commands |
+| 0.4.0   | released | Validating implementation for the request parameters                                                                  |
+| 0.5.0   | released | Require project id of all requests                                                                                    |
+
 
 
 Hopefully, you will enjoy on Linux and MacOS
