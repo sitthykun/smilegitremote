@@ -154,21 +154,21 @@ There are a couple route samples such as
 
 Before request the git command, these commands need a token to access
 ```
-@app.route('/token/', methods= ['POST'])
-def tokenProjectPost() -> Any:
-    return Action(log).tokenPost() if Validation(log).tokenPost() else Validation(log).fail(message= 'token project post')
+@app.route('/token/<projectId>', methods= ['POST'])
+def tokenProjectPost(projectId: str) -> Any:
+    return Action(log).tokenPost(projectId) if Validation(log).tokenPost(projectId) else Validation(log).fail(message= 'token project post')
 ```
 
 ```
-$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/token"
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/token/123"
 ```
 
 ```
-$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/checkout"
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/checkout/123"
 ```
 
 ```
-$ curl -X POST -H "Content-type: application/json" -d "{\"token\" : \"kara\"}" "http://127.0.0.1:6060/pull"
+$ curl -X POST -H "Content-type: application/json" -d "{\"token\" : \"kara\"}" "http://127.0.0.1:6060/pull/123"
 ```
 
 
