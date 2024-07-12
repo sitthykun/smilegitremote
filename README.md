@@ -164,11 +164,11 @@ $ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\",
 ```
 
 ```
-$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"password\" : \"123456\"}" "http://127.0.0.1:6060/checkout/123"
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"token\" : \"xxxxxx\"}" "http://127.0.0.1:6060/checkout/123"
 ```
 
 ```
-$ curl -X POST -H "Content-type: application/json" -d "{\"token\" : \"kara\"}" "http://127.0.0.1:6060/pull/123"
+$ curl -X POST -H "Content-type: application/json" -d "{\"username\" : \"kara\", \"token\" : \"xxxxxx\"}" "http://127.0.0.1:6060/pull/123"
 ```
 
 
