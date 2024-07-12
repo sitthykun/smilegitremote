@@ -3,7 +3,7 @@ Author: masakokh
 Year: 2024
 Package: project
 Note:
-Version: 1.0.1
+Version: 1.0.2
 """
 # built-in
 from __future__ import annotations
@@ -74,12 +74,12 @@ class Project:
 		"""
 		# private
 		# # 1234567
-		self.__id           = project
+		self.project        = project
 		# # load all data
 		self.__data         = data
 
 		# public
-		self.auth           = self.__getAuthByProjectId(auth= auth, project= self.__id)
+		self.auth           = self.__getAuthByProjectId(auth= auth, project= self.project)
 		self.env            = self.__data.get(Project.Constant.ENV)
 		self.forceClone     = self.__data.get(Project.Constant.FORCE_CLONE)         or  'false'
 		self.forcePull      = self.__data.get(Project.Constant.FORCE_PULL)          or  'false'
@@ -94,8 +94,6 @@ class Project:
 		self.note           = self.__data.get(Project.Constant.NOTE)
 		self.trigger        = self.Trigger(self.__data.get(Project.Constant.TRIGGER))
 		self.whiteIP        = self.__data.get(Project.Constant.WHITE_IP)
-		# append project
-		self.project        = self.__id
 
 	def __getAuth(self, auth: list, project: str) -> Auth:
 		"""
@@ -124,14 +122,15 @@ class Project:
 		# append username and token
 		return str(data.get(Project.Constant.GIT_REMOTE_URL)).replace('//', f'//{data.get(Project.Constant.GIT_USERNAME)}:{data.get(Project.Constant.GIT_TOKEN)}@')
 
-	def get(self, data: dict, project: str) -> Project:
+	def get(self, data: dict, project: str, auth: list) -> Project:
 		"""
 
 		:param data:
 		:param project:
+		:param auth:
 		:return:
 		"""
-		return Project(data= data, project= project)
+		return Project(data= data, project= project, auth= auth)
 
 	def getDict(self) -> dict:
 		"""
